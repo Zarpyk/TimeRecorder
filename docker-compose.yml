@@ -1,11 +1,11 @@
 ﻿#file: noinspection SpellCheckingInspection
 services:
-  time-recorder-server:
-    container_name: time-recorder-server
-    image: timerecorderserver
+  time-recorder-api:
+    container_name: time-recorder-api
+    image: timerecorderapi
     build:
       context: .
-      dockerfile: TimeRecorderServer/Dockerfile
+      dockerfile: TimeRecorderAPI/Dockerfile
     ports:
       - 8080:8080
     depends_on: 

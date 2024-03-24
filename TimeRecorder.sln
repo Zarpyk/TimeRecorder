@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorder", "TimeRecorder\TimeRecorder.csproj", "{690E5535-480A-4FE3-9B47-80789E139E01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorderServer", "TimeRecorderServer\TimeRecorderServer.csproj", "{E11F98D2-D12E-4845-883C-96DA6860FD0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorderAPI", "TimeRecorderAPI\TimeRecorderAPI.csproj", "{E11F98D2-D12E-4845-883C-96DA6860FD0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorderDomain", "TimeRecorderDomain\TimeRecorderDomain.csproj", "{30D625BC-45B8-4845-9D8F-160866FC44DE}"
 EndProject
@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorderAPITests", "TimeRecorderAPITests\TimeRecorderAPITests.csproj", "{920EA254-06BB-41B3-9436-40F2D1BCAFAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,10 @@ Global
 		{30E26011-5799-4BA9-B82A-757325DEA828}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30E26011-5799-4BA9-B82A-757325DEA828}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30E26011-5799-4BA9-B82A-757325DEA828}.Release|Any CPU.Build.0 = Release|Any CPU
+		{920EA254-06BB-41B3-9436-40F2D1BCAFAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{920EA254-06BB-41B3-9436-40F2D1BCAFAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{920EA254-06BB-41B3-9436-40F2D1BCAFAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{920EA254-06BB-41B3-9436-40F2D1BCAFAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
