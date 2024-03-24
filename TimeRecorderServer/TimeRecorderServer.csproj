@@ -15,8 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Src\Application\Port\In.Service\" />
-      <Folder Include="Src\Application\Service\" />
       <Folder Include="Src\Exception\" />
     </ItemGroup>
 
