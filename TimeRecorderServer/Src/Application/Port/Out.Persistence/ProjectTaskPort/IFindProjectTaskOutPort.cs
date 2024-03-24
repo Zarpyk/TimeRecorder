@@ -2,6 +2,6 @@
 
 namespace TimeRecorderServer.Application.Port.Out.Persistence.ProjectTaskPort {
     public interface IFindProjectTaskOutPort {
-        public ProjectTask? FindTask(string id);
+        public Task<ProjectTask?> FindTask(string id);
     }
 }

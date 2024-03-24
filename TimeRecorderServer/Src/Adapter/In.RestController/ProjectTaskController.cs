@@ -11,15 +11,15 @@ namespace TimeRecorderServer.Adapter.In.RestController {
     ) : ControllerBase {
 
         [HttpGet("{id}")]
-        public ActionResult<ProjectTaskDTO> Get(string id) {
-            ProjectTaskDTO? projectTaskDTO = findProjectTaskOutPort.FindTask(id);
+        public async Task<ActionResult<ProjectTaskDTO>> Get(string id) {
+            ProjectTaskDTO? projectTaskDTO = await findProjectTaskOutPort.FindTask(id);
             if (projectTaskDTO == null) return NotFound();
             return Ok(projectTaskDTO);
         }
 
         [HttpPost]
-        public ActionResult<string> Post(ProjectTaskDTO projectTaskDTO) {
-            bool addTask = addProjectTaskOutPort.AddTask(projectTaskDTO);
+        public async Task<ActionResult<string>> Post(ProjectTaskDTO projectTaskDTO) {
+            bool addTask = await addProjectTaskOutPort.AddTask(projectTaskDTO);
             return addTask ? Ok() : BadRequest();
         }
     }

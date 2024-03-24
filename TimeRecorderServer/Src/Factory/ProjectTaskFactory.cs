@@ -4,7 +4,7 @@ using TimeRecorderServer.DTO;
 
 namespace TimeRecorderServer.Factory {
     public class ProjectTaskFactory(IDataBaseManager dataBaseManager) {
-        public ProjectTask? CreateTask(ProjectTaskDTO? projectTaskDTO) {
+        public async Task<ProjectTask?> CreateTask(ProjectTaskDTO? projectTaskDTO) {
             if (projectTaskDTO == null) return null;
             ProjectTask projectTask = new() {
                 Name = projectTaskDTO.Name,
@@ -13,12 +13,12 @@ namespace TimeRecorderServer.Factory {
             };
 
             if (projectTaskDTO.ProjectID != null)
-                projectTask.Project = dataBaseManager.Find<Project>(projectTaskDTO.ProjectID.ToString()!);
+                projectTask.Project = await dataBaseManager.Find<Project>(projectTaskDTO.ProjectID.ToString()!);
 
             if (projectTaskDTO.TagIDs != null) {
                 projectTask.Tags = [];
                 foreach (Guid tagID in projectTaskDTO.TagIDs) {
-                    Tag? tag = dataBaseManager.Find<Tag>(tagID.ToString());
+                    Tag? tag = await dataBaseManager.Find<Tag>(tagID.ToString());
                     if (tag == null) continue;
                     projectTask.Tags.Add(tag);
                 }

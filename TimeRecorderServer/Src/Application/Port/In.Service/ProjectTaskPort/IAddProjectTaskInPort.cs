@@ -2,6 +2,6 @@
 
 namespace TimeRecorderServer.Application.Port.In.Service.ProjectTaskPort {
     public interface IAddProjectTaskInPort {
-        public bool AddTask(ProjectTaskDTO projectTaskDTO);
+        public Task<bool> AddTask(ProjectTaskDTO projectTaskDTO);
     }
 }

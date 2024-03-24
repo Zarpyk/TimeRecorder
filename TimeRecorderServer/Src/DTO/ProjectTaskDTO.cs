@@ -2,7 +2,7 @@
 
 namespace TimeRecorderServer.DTO {
     public record ProjectTaskDTO {
-        public Guid? Id { get; set; }
+        public Guid? Id { get; internal set; }
         public string Name { get; set; } = string.Empty;
         public TimeSpan TimeEstimated { get; set; } = TimeSpan.Zero;
         public HashSet<TimeRecord>? TimeRecords { get; set; }

@@ -2,6 +2,6 @@
 
 namespace TimeRecorderServer.Application.Port.Out.Persistence.ProjectTaskPort {
     public interface IAddProjectTaskOutPort {
-        public bool AddTask(ProjectTask projectTask);
+        public Task<bool> AddTask(ProjectTask projectTask);
     }
 }

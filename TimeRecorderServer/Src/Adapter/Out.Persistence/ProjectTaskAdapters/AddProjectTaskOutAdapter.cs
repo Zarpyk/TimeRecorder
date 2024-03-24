@@ -6,8 +6,8 @@ using TimeRecorderServer.DB;
 namespace TimeRecorderServer.Adapter.Out.Persistence.ProjectTaskAdapters {
     [PortAdapter(typeof(IAddProjectTaskOutPort))]
     public class AddProjectTaskOutAdapter(IDataBaseManager db) : IAddProjectTaskOutPort {
-        public bool AddTask(ProjectTask projectTask) {
-            db.Insert(projectTask);
+        public async Task<bool> AddTask(ProjectTask projectTask) {
+            await db.Insert(projectTask);
             return true;
         }
     }

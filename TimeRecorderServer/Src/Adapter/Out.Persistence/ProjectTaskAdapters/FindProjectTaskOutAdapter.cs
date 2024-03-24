@@ -6,8 +6,8 @@ using TimeRecorderServer.DB;
 namespace TimeRecorderServer.Adapter.Out.Persistence.ProjectTaskAdapters {
     [PortAdapter(typeof(IFindProjectTaskOutPort))]
     public class FindProjectTaskOutAdapter(IDataBaseManager db) : IFindProjectTaskOutPort {
-        public ProjectTask? FindTask(string id) {
-            ProjectTask? projectTask = db.Find<ProjectTask>(id);
+        public async Task<ProjectTask?> FindTask(string id) {
+            ProjectTask? projectTask = await db.Find<ProjectTask>(id);
             return projectTask;
         }
     }
