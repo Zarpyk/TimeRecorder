@@ -1,0 +1,46 @@
+﻿#file: noinspection SpellCheckingInspection
+services:
+  time-recorder-server:
+    container_name: time-recorder-server
+    image: timerecorderserver
+    build:
+      context: .
+      dockerfile: TimeRecorderServer/Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      TIMERECORDER_DB_TYPE: mongodb
+      TIMERECORDER_MONGODB_USER: root
+      TIMERECORDER_MONGODB_PASS: mongo_password
+      TIMERECORDER_MONGODB_IP: time-recorder-mongodb
+      TIMERECORDER_MONGODB_PORT: 27017
+      TIMERECORDER_MONGODB_DBNAME: time_recorder
+    networks:
+      - timerecorder-network
+
+  time-recorder-mongodb:
+    container_name: time-recorder-mongodb
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongo_password
+    networks:
+      - timerecorder-network
+
+  time-recorder-mongodb-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongo_password
+      ME_CONFIG_BASICAUTH_USERNAME: root
+      ME_CONFIG_BASICAUTH_PASSWORD: mongo_password
+      ME_CONFIG_MONGODB_URL: mongodb://root:mongo_password@time-recorder-mongodb:27017/
+    networks:
+      - timerecorder-network
+
+networks:
+  timerecorder-network:

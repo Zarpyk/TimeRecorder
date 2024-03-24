@@ -1,0 +1,25 @@
+@TimeRecorderServer_HostAddress = http://localhost:5279
+
+###
+POST http://localhost:5279/api/ProjectTask
+accept: text/plain
+Content-Type: application/json
+
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "name": "string",
+  "timeEstimated": {
+    "ticks": 0
+  },
+  "timeRecords": [
+    {
+      "startTime": "2024-03-23T23:52:22.750Z",
+      "endTime": "2024-03-23T23:52:22.750Z"
+    }
+  ],
+  "projectID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "tagIDs": [
+    "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  ]
+}
+###
