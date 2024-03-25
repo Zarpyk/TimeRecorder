@@ -14,7 +14,7 @@ namespace TimeRecorderAPITests {
         private Mock<IFindProjectTaskInPort> _findProjectTaskInPort = null!;
         private ProjectTaskDTOValidator _validator = new();
         private Mock<ProjectTaskDTO> _projectTaskDTO = null!;
-        bool _created = false;
+        private bool _created;
 
         [OneTimeSetUp]
         public void OneTimeSetup() {
@@ -34,7 +34,7 @@ namespace TimeRecorderAPITests {
 
             _addProjectTaskInPort.When(() => !_created).Setup(x => x.AddTask(_projectTaskDTO.Object))
                                  .ReturnsAsync(_projectTaskDTO.Object).Callback(() => _created = true);
-            _addProjectTaskInPort.When(() => _created).Setup(x => x.AddTask(It.IsAny<ProjectTaskDTO>()))
+            _addProjectTaskInPort.When(() => _created).Setup(x => x.AddTask(_projectTaskDTO.Object))
                                  .ReturnsAsync((ProjectTaskDTO?) null);
             _findProjectTaskInPort.Setup(x => x.FindTask(_projectTaskDTO.Object.ID.ToString()!))
                                   .ReturnsAsync(_projectTaskDTO.Object);
