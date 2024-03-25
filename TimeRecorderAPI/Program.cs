@@ -1,7 +1,8 @@
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
 using TimeRecorderAPI.Configuration;
 using TimeRecorderAPI.Configuration.Adapter;
+using TimeRecorderAPI.Exceptions;
+using TimeRecorderAPI.Exceptions.Responses;
 
 namespace TimeRecorderAPI {
     internal static class Program {
@@ -15,24 +16,21 @@ namespace TimeRecorderAPI {
             builder.Services.AddFactories();
             builder.Services.AddAdapters();
 
+            builder.Services.AddExceptions();
             builder.Services.AddControllers();
 
-            builder.Services.AddSwaggerGen(options => {
-                // Allow nullable reference types
-                options.SupportNonNullableReferenceTypes();
-                // Map correctly TimeSpan on Swagger
-                options.MapType(typeof(TimeSpan), () => new OpenApiSchema {
-                    Type = "string",
-                    Example = new OpenApiString("00:00:00")
-                });
-            });
+            builder.Services.AddSwagger();
+            builder.Services.AddFluentValidation();
 
             WebApplication app = builder.Build();
+
+            app.UseExceptionHandler(_ => { });
+            app.UseHsts();
 
             if (app.Environment.IsDevelopment()) {
                 app.UseSwagger();
                 app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/v1/swagger.json", "TimeRecorder API V1"); });
-                app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
             }
 
             app.MapControllers();

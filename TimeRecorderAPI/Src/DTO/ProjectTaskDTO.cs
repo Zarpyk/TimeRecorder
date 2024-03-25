@@ -1,4 +1,5 @@
-﻿using TimeRecorderDomain.Models;
+﻿using FluentValidation;
+using TimeRecorderDomain.Models;
 
 namespace TimeRecorderAPI.DTO {
     public record ProjectTaskDTO {
@@ -8,5 +9,11 @@ namespace TimeRecorderAPI.DTO {
         public HashSet<TimeRecord>? TimeRecords { get; set; }
         public Guid? ProjectID { get; set; }
         public HashSet<Guid>? TagIDs { get; set; }
+    }
+
+    public class ProjectTaskDTOValidator : AbstractValidator<ProjectTaskDTO> {
+        public ProjectTaskDTOValidator() {
+            RuleFor(x => x.ProjectID).NotNull();
+        }
     }
 }
