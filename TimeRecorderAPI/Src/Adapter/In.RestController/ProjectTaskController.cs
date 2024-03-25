@@ -4,30 +4,27 @@ using TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort;
 using TimeRecorderAPI.DTO;
 using TimeRecorderAPI.Exceptions.Responses;
 using TimeRecorderAPI.Extensions;
-using ValidationException = TimeRecorderAPI.Exceptions.ValidationException;
 
 namespace TimeRecorderAPI.Adapter.In.RestController {
     [ApiController]
     [Route("api/[controller]")]
     public class ProjectTaskController(
-        IAddProjectTaskInPort addProjectTaskOutPort,
         IFindProjectTaskInPort findProjectTaskOutPort,
+        IAddProjectTaskInPort addProjectTaskOutPort,
         IValidator<ProjectTaskDTO> validator
     ) : ControllerBase {
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectTaskDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(string id) {
             ProjectTaskDTO? projectTaskDTO = await findProjectTaskOutPort.FindTask(id);
             return projectTaskDTO == null ? NotFound() : Ok(projectTaskDTO);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="projectTaskDTO"></param>
-        /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProjectTaskDTO))]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationExceptionResponse))]
         public async Task<IActionResult> Post(ProjectTaskDTO projectTaskDTO) {
             await validator.ValidateData(projectTaskDTO);

@@ -1,25 +1,23 @@
 ﻿using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using TimeRecorderAPI.Adapter.In.RestController;
 using TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort;
 using TimeRecorderAPI.DTO;
 using TimeRecorderDomain.Models;
+using ProjectTaskController = TimeRecorderAPI.Adapter.In.RestController.ProjectTaskController;
 
-namespace TimeRecorderAPITests {
-    public class ProjectTaskTest {
-        private Mock<IAddProjectTaskInPort> _addProjectTaskInPort = null!;
+namespace TimeRecorderAPITests.Controller {
+    public class ProjectTaskControllerTest {
         private Mock<IFindProjectTaskInPort> _findProjectTaskInPort = null!;
+        private Mock<IAddProjectTaskInPort> _addProjectTaskInPort = null!;
         private ProjectTaskDTOValidator _validator = new();
         private Mock<ProjectTaskDTO> _projectTaskDTO = null!;
         private bool _created;
 
         [OneTimeSetUp]
         public void OneTimeSetup() {
-            _addProjectTaskInPort = new Mock<IAddProjectTaskInPort>();
             _findProjectTaskInPort = new Mock<IFindProjectTaskInPort>();
+            _addProjectTaskInPort = new Mock<IAddProjectTaskInPort>();
 
             DateTime dateTime = new(2024, 1, 1, 12,
                                     0, 0);
@@ -32,12 +30,17 @@ namespace TimeRecorderAPITests {
             });
             _projectTaskDTO.SetupGet(x => x.ID).Returns(Guid.NewGuid());
 
+            SetupPorts();
+        }
+
+        private void SetupPorts() {
+            _findProjectTaskInPort.Setup(x => x.FindTask(_projectTaskDTO.Object.ID.ToString()!))
+                                  .ReturnsAsync(_projectTaskDTO.Object);
+            
             _addProjectTaskInPort.When(() => !_created).Setup(x => x.AddTask(_projectTaskDTO.Object))
                                  .ReturnsAsync(_projectTaskDTO.Object).Callback(() => _created = true);
             _addProjectTaskInPort.When(() => _created).Setup(x => x.AddTask(_projectTaskDTO.Object))
                                  .ReturnsAsync((ProjectTaskDTO?) null);
-            _findProjectTaskInPort.Setup(x => x.FindTask(_projectTaskDTO.Object.ID.ToString()!))
-                                  .ReturnsAsync(_projectTaskDTO.Object);
         }
 
         [SetUp]
@@ -47,8 +50,8 @@ namespace TimeRecorderAPITests {
 
         [Test]
         public async Task Given_a_existing_id_when_getting_a_ProjectTask_then_return_Ok_ProjectTaskDTO() {
-            ProjectTaskController projectTaskController = new(_addProjectTaskInPort.Object,
-                                                              _findProjectTaskInPort.Object,
+            ProjectTaskController projectTaskController = new(_findProjectTaskInPort.Object,
+                                                              _addProjectTaskInPort.Object,
                                                               _validator);
 
             IActionResult result = await projectTaskController.Get(_projectTaskDTO.Object.ID.ToString()!);
@@ -59,8 +62,8 @@ namespace TimeRecorderAPITests {
 
         [Test]
         public async Task Given_a_non_exist_id_when_getting_a_ProjectTask_then_return_NotFound() {
-            ProjectTaskController projectTaskController = new(_addProjectTaskInPort.Object,
-                                                              _findProjectTaskInPort.Object,
+            ProjectTaskController projectTaskController = new(_findProjectTaskInPort.Object,
+                                                              _addProjectTaskInPort.Object,
                                                               _validator);
 
             IActionResult result = await projectTaskController.Get(Guid.NewGuid().ToString());
@@ -73,8 +76,8 @@ namespace TimeRecorderAPITests {
             _addProjectTaskInPort.Setup(x => x.AddTask(It.IsAny<ProjectTaskDTO>()))
                                  .ReturnsAsync(_projectTaskDTO.Object);
 
-            ProjectTaskController projectTaskController = new(_addProjectTaskInPort.Object,
-                                                              _findProjectTaskInPort.Object,
+            ProjectTaskController projectTaskController = new(_findProjectTaskInPort.Object,
+                                                              _addProjectTaskInPort.Object,
                                                               _validator);
 
             IActionResult result = await projectTaskController.Post(_projectTaskDTO.Object);
@@ -85,8 +88,8 @@ namespace TimeRecorderAPITests {
 
         [Test]
         public async Task Given_a_duplicated_ProjectTaskDTO_when_posting_a_ProjectTask_then_return_Conflict() {
-            ProjectTaskController projectTaskController = new(_addProjectTaskInPort.Object,
-                                                              _findProjectTaskInPort.Object,
+            ProjectTaskController projectTaskController = new(_findProjectTaskInPort.Object,
+                                                              _addProjectTaskInPort.Object,
                                                               _validator);
 
             await projectTaskController.Post(_projectTaskDTO.Object);

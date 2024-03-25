@@ -4,29 +4,29 @@ using TimeRecorderDomain.Models;
 
 namespace TimeRecorderAPI.Factory {
     public class ProjectTaskFactory(IDataBaseManager dataBaseManager) {
-        public async Task<ProjectTask?> CreateTask(ProjectTaskDTO? projectTaskDTO) {
+        public async Task<ProjectTaskController?> CreateTask(ProjectTaskDTO? projectTaskDTO) {
             if (projectTaskDTO == null) return null;
-            ProjectTask projectTask = new() {
+            ProjectTaskController projectTaskController = new() {
                 Name = projectTaskDTO.Name,
                 TimeEstimated = projectTaskDTO.TimeEstimated,
                 TimeRecords = projectTaskDTO.TimeRecords
             };
 
             if (projectTaskDTO.ProjectID != null)
-                projectTask.Project = await dataBaseManager.Find<Project>(projectTaskDTO.ProjectID.ToString()!);
+                projectTaskController.Project = await dataBaseManager.Find<Project>(projectTaskDTO.ProjectID.ToString()!);
 
             if (projectTaskDTO.TagIDs != null) {
-                projectTask.Tags = [];
+                projectTaskController.Tags = [];
                 foreach (Guid tagID in projectTaskDTO.TagIDs) {
                     Tag? tag = await dataBaseManager.Find<Tag>(tagID.ToString());
                     if (tag == null) continue;
-                    projectTask.Tags.Add(tag);
+                    projectTaskController.Tags.Add(tag);
                 }
             }
-            return projectTask;
+            return projectTaskController;
         }
 
-        public ProjectTaskDTO? CreateTaskDTO(ProjectTask? projectTask) {
+        public ProjectTaskDTO? CreateTaskDTO(ProjectTaskController? projectTask) {
             if (projectTask == null) return null;
             ProjectTaskDTO projectTaskDTO = new() {
                 ID = new Guid(projectTask.ID),
