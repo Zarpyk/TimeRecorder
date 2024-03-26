@@ -3,6 +3,5 @@
 namespace TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort {
     public interface IAddProjectTaskInPort {
         public Task<ProjectTaskDTO?> AddTask(ProjectTaskDTO projectTaskDTO);
-        public Task<ProjectTaskDTO?> ReplaceTask(string id, ProjectTaskDTO projectTaskDTO);
     }
 }

@@ -19,9 +19,5 @@ namespace TimeRecorderAPI.Application.Service.ProjectTaskService {
             }
             return null;
         }
-
-        public async Task<ProjectTaskDTO?> ReplaceTask(string id, ProjectTaskDTO projectTaskDTO) {
-            return projectTaskDTO;
-        }
     }
 }

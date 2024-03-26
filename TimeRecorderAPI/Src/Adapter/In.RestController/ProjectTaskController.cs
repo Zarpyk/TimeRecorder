@@ -11,6 +11,8 @@ namespace TimeRecorderAPI.Adapter.In.RestController {
     public class ProjectTaskController(
         IFindProjectTaskInPort findProjectTaskOutPort,
         IAddProjectTaskInPort addProjectTaskOutPort,
+        IModifyProjectTaskInPort modifyProjectTaskOutPort,
+        IDeleteProjectTaskInPort deleteProjectTaskOutPort,
         IValidator<ProjectTaskDTO> validator
     ) : ControllerBase {
 
@@ -36,13 +38,21 @@ namespace TimeRecorderAPI.Adapter.In.RestController {
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectTaskDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationExceptionResponse))]
         public async Task<IActionResult> Put(string id, ProjectTaskDTO projectTaskDTO) {
             await validator.ValidateData(projectTaskDTO);
 
-            ProjectTaskDTO? task = await addProjectTaskOutPort.ReplaceTask(id, projectTaskDTO);
+            ProjectTaskDTO? task = await modifyProjectTaskOutPort.ReplaceTask(id, projectTaskDTO);
 
             if (task == null) return NotFound();
             return Ok(task);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id) {
+            await deleteProjectTaskOutPort.DeleteTask(id);
+            return Ok();
         }
     }
 }

@@ -13,6 +13,8 @@ namespace TimeRecorderAPITests.Controller {
 
         private readonly Mock<IFindProjectTaskInPort> _findProjectTaskInPort;
         private readonly Mock<IAddProjectTaskInPort> _addProjectTaskInPort;
+        private readonly Mock<IModifyProjectTaskInPort> _modifyProjectTaskInPort;
+        private readonly Mock<IDeleteProjectTaskInPort> _deleteProjectTaskInPort;
         private readonly ProjectTaskDTOValidator _validator = new();
         private bool _created;
 
@@ -34,11 +36,15 @@ namespace TimeRecorderAPITests.Controller {
         public ProjectTaskControllerTest() {
             _findProjectTaskInPort = new Mock<IFindProjectTaskInPort>();
             _addProjectTaskInPort = new Mock<IAddProjectTaskInPort>();
+            _modifyProjectTaskInPort = new Mock<IModifyProjectTaskInPort>();
+            _deleteProjectTaskInPort = new Mock<IDeleteProjectTaskInPort>();
 
             SetupPorts();
 
             _projectTaskController = new ProjectTaskController(_findProjectTaskInPort.Object,
                                                                _addProjectTaskInPort.Object,
+                                                               _modifyProjectTaskInPort.Object,
+                                                               _deleteProjectTaskInPort.Object,
                                                                _validator);
         }
 
@@ -58,12 +64,12 @@ namespace TimeRecorderAPITests.Controller {
                                  .Setup(x => x.AddTask(_projectTaskDTO))
                                  .ReturnsAsync((ProjectTaskDTO?) null);
 
-            _addProjectTaskInPort.When(() => !_created)
-                                 .Setup(x => x.ReplaceTask(It.IsAny<string>(), It.IsAny<ProjectTaskDTO>()))
-                                 .ReturnsAsync((ProjectTaskDTO?) null);
-            _addProjectTaskInPort.When(() => _created)
-                                 .Setup(x => x.ReplaceTask(_projectTaskDTO.ID.ToString()!, It.IsAny<ProjectTaskDTO>()))
-                                 .ReturnsAsync(_projectTaskDTO);
+            _modifyProjectTaskInPort.When(() => !_created)
+                                    .Setup(x => x.ReplaceTask(It.IsAny<string>(), It.IsAny<ProjectTaskDTO>()))
+                                    .ReturnsAsync((ProjectTaskDTO?) null);
+            _modifyProjectTaskInPort.When(() => _created)
+                                    .Setup(x => x.ReplaceTask(_projectTaskDTO.ID.ToString()!, It.IsAny<ProjectTaskDTO>()))
+                                    .ReturnsAsync(_projectTaskDTO);
         }
 
         [Fact(DisplayName = "Given a existing id " +
@@ -125,6 +131,16 @@ namespace TimeRecorderAPITests.Controller {
             IActionResult result = await _projectTaskController.Put(_projectTaskDTO.ID.ToString()!, _projectTaskDTO);
 
             result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [Fact(DisplayName = "Given a existing id " +
+                            "When deleting a ProjectTask " +
+                            "Then return Ok")]
+        public async Task DeleteProjectTaskDTOWithExistingID() {
+            await _projectTaskController.Post(_projectTaskDTO);
+            IActionResult result = await _projectTaskController.Delete(_projectTaskDTO.ID.ToString()!);
+
+            result.Should().BeOfType<OkResult>();
         }
     }
 }
