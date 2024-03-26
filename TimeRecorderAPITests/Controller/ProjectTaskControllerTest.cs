@@ -4,20 +4,20 @@ using Moq;
 using TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort;
 using TimeRecorderAPI.DTO;
 using TimeRecorderDomain.Models;
+using Xunit;
 using ProjectTaskController = TimeRecorderAPI.Adapter.In.RestController.ProjectTaskController;
 
 namespace TimeRecorderAPITests.Controller {
     public class ProjectTaskControllerTest {
-        private Mock<IFindProjectTaskInPort> _findProjectTaskInPort = null!;
-        private Mock<IAddProjectTaskInPort> _addProjectTaskInPort = null!;
-        private ProjectTaskDTOValidator _validator = new();
-        private ProjectTaskDTO _projectTaskDTO = null!;
-        private bool _created;
+        private static readonly Mock<IFindProjectTaskInPort> _findProjectTaskInPort;
+        private static readonly Mock<IAddProjectTaskInPort> _addProjectTaskInPort;
+        private static readonly ProjectTaskDTOValidator _validator = new();
+        private static readonly ProjectTaskDTO _projectTaskDTO;
+        private static bool _created;
 
-        private ProjectTaskController projectTaskController = null!;
+        private static readonly ProjectTaskController _projectTaskController;
 
-        [OneTimeSetUp]
-        public void OneTimeSetup() {
+        static ProjectTaskControllerTest() {
             _findProjectTaskInPort = new Mock<IFindProjectTaskInPort>();
             _addProjectTaskInPort = new Mock<IAddProjectTaskInPort>();
 
@@ -34,58 +34,88 @@ namespace TimeRecorderAPITests.Controller {
 
             SetupPorts();
 
-            projectTaskController = new ProjectTaskController(_findProjectTaskInPort.Object,
-                                                              _addProjectTaskInPort.Object,
-                                                              _validator);
+            _projectTaskController = new ProjectTaskController(_findProjectTaskInPort.Object,
+                                                               _addProjectTaskInPort.Object,
+                                                               _validator);
         }
 
-        private void SetupPorts() {
-            _findProjectTaskInPort.When(() => !_created).Setup(x => x.FindTask(It.IsAny<string>()))
+        private static void SetupPorts() {
+            _findProjectTaskInPort.When(() => !_created)
+                                  .Setup(x => x.FindTask(It.IsAny<string>()))
                                   .ReturnsAsync((ProjectTaskDTO?) null);
-            _findProjectTaskInPort.When(() => _created).Setup(x => x.FindTask(_projectTaskDTO.ID.ToString()!))
+            _findProjectTaskInPort.When(() => _created)
+                                  .Setup(x => x.FindTask(_projectTaskDTO.ID.ToString()!))
                                   .ReturnsAsync(_projectTaskDTO);
 
-            _addProjectTaskInPort.When(() => !_created).Setup(x => x.AddTask(_projectTaskDTO))
+            _addProjectTaskInPort.When(() => !_created)
+                                 .Setup(x => x.AddTask(_projectTaskDTO))
                                  .ReturnsAsync(_projectTaskDTO).Callback(() => _created = true);
-            _addProjectTaskInPort.When(() => _created).Setup(x => x.AddTask(_projectTaskDTO))
+            _addProjectTaskInPort.When(() => _created)
+                                 .Setup(x => x.AddTask(_projectTaskDTO))
                                  .ReturnsAsync((ProjectTaskDTO?) null);
+
+            _addProjectTaskInPort.When(() => !_created)
+                                 .Setup(x => x.ReplaceTask(It.IsAny<string>(), It.IsAny<ProjectTaskDTO>()))
+                                 .ReturnsAsync((ProjectTaskDTO?) null);
+            _addProjectTaskInPort.When(() => _created)
+                                 .Setup(x => x.ReplaceTask(_projectTaskDTO.ID.ToString()!, It.IsAny<ProjectTaskDTO>()))
+                                 .ReturnsAsync(_projectTaskDTO);
         }
 
-        [SetUp]
-        public void Setup() {
+        public ProjectTaskControllerTest() {
             _created = false;
         }
 
-        [Test]
-        public async Task Given_a_existing_id_when_getting_a_ProjectTask_then_return_Ok_ProjectTaskDTO() {
-            await projectTaskController.Post(_projectTaskDTO);
-            IActionResult result = await projectTaskController.Get(_projectTaskDTO.ID.ToString()!);
+        [Fact(DisplayName = "Given a existing id " +
+                            "When getting a ProjectTask " +
+                            "Then return Ok ProjectTaskDTO")]
+        public async Task GetProjectTaskDTOWithExistingID() {
+            await _projectTaskController.Post(_projectTaskDTO);
+            IActionResult result = await _projectTaskController.Get(_projectTaskDTO.ID.ToString()!);
 
             result.Should().BeOfType<OkObjectResult>()
                   .Which.Value.Should().BeEquivalentTo(_projectTaskDTO);
         }
 
-        [Test]
-        public async Task Given_a_non_exist_id_when_getting_a_ProjectTask_then_return_NotFound() {
-            IActionResult result = await projectTaskController.Get(_projectTaskDTO.ID.ToString()!);
+        [Fact(DisplayName = "Given a non exist id " +
+                            "When getting a ProjectTask " +
+                            "Then return NotFound")]
+        public async Task GetProjectTaskDTOWithNonExistingID() {
+            IActionResult result = await _projectTaskController.Get(_projectTaskDTO.ID.ToString()!);
 
             result.Should().BeOfType<NotFoundResult>();
         }
 
-        [Test]
-        public async Task Given_a_valid_ProjectTaskDTO_when_posting_a_ProjectTask_then_return_Created_ProjectTaskDTO() {
-            IActionResult result = await projectTaskController.Post(_projectTaskDTO);
+        [Fact(DisplayName = "Given a valid ProjectTaskDTO " +
+                            "When posting a ProjectTask " +
+                            "Then return Created ProjectTaskDTO")]
+        public async Task PostValidProjectTaskDTO() {
+            IActionResult result = await _projectTaskController.Post(_projectTaskDTO);
 
             result.Should().BeOfType<CreatedAtActionResult>()
                   .Which.Value.Should().BeEquivalentTo(_projectTaskDTO);
         }
 
-        [Test]
-        public async Task Given_a_duplicated_ProjectTaskDTO_when_posting_a_ProjectTask_then_return_Conflict() {
-            await projectTaskController.Post(_projectTaskDTO);
-            IActionResult result = await projectTaskController.Post(_projectTaskDTO);
+        [Fact(DisplayName = "Given a duplicated ProjectTaskDTO " +
+                            "When posting a ProjectTask " +
+                            "Then return Conflict")]
+        public async Task PostDuplicatedProjectTaskDTO() {
+            await _projectTaskController.Post(_projectTaskDTO);
+            IActionResult result = await _projectTaskController.Post(_projectTaskDTO);
 
             result.Should().BeOfType<ConflictResult>();
+        }
+
+        [Fact(DisplayName = "Given a id and valid ProjectTaskDTO " +
+                            "When putting a ProjectTask " +
+                            "Then return Ok ProjectTaskDTO")]
+        public async Task PutValidProjectTaskDTO() {
+            await _projectTaskController.Post(_projectTaskDTO);
+            _projectTaskDTO.Name = "Task 2";
+            IActionResult result = await _projectTaskController.Put(_projectTaskDTO.ID.ToString()!, _projectTaskDTO);
+
+            result.Should().BeOfType<OkObjectResult>()
+                  .Which.Value.Should().BeEquivalentTo(_projectTaskDTO);
         }
     }
 }

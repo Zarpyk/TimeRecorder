@@ -33,5 +33,15 @@ namespace TimeRecorderAPI.Adapter.In.RestController {
             if (addTask == null) return Conflict();
             return CreatedAtAction(nameof(Get), new { id = addTask.ID }, addTask);
         }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectTaskDTO))]
+        public async Task<IActionResult> Put(string id, ProjectTaskDTO projectTaskDTO) {
+            await validator.ValidateData(projectTaskDTO);
+
+            ProjectTaskDTO? task = await addProjectTaskOutPort.ReplaceTask(id, projectTaskDTO);
+
+            return Ok(task);
+        }
     }
 }
