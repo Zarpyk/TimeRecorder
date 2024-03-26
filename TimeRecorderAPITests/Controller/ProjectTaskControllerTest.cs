@@ -40,7 +40,9 @@ namespace TimeRecorderAPITests.Controller {
         }
 
         private void SetupPorts() {
-            _findProjectTaskInPort.Setup(x => x.FindTask(_projectTaskDTO.Object.ID.ToString()!))
+            _findProjectTaskInPort.When(() => !_created).Setup(x => x.FindTask(It.IsAny<string>()))
+                                  .ReturnsAsync((ProjectTaskDTO?) null);
+            _findProjectTaskInPort.When(() => _created).Setup(x => x.FindTask(_projectTaskDTO.Object.ID.ToString()!))
                                   .ReturnsAsync(_projectTaskDTO.Object);
 
             _addProjectTaskInPort.When(() => !_created).Setup(x => x.AddTask(_projectTaskDTO.Object))
@@ -56,6 +58,7 @@ namespace TimeRecorderAPITests.Controller {
 
         [Test]
         public async Task Given_a_existing_id_when_getting_a_ProjectTask_then_return_Ok_ProjectTaskDTO() {
+            await projectTaskController.Post(_projectTaskDTO.Object);
             IActionResult result = await projectTaskController.Get(_projectTaskDTO.Object.ID.ToString()!);
 
             result.Should().BeOfType<OkObjectResult>()
@@ -64,7 +67,7 @@ namespace TimeRecorderAPITests.Controller {
 
         [Test]
         public async Task Given_a_non_exist_id_when_getting_a_ProjectTask_then_return_NotFound() {
-            IActionResult result = await projectTaskController.Get(Guid.NewGuid().ToString());
+            IActionResult result = await projectTaskController.Get(_projectTaskDTO.Object.ID.ToString()!);
 
             result.Should().BeOfType<NotFoundResult>();
         }
