@@ -9,18 +9,16 @@ using ProjectTaskController = TimeRecorderAPI.Adapter.In.RestController.ProjectT
 
 namespace TimeRecorderAPITests.Controller {
     public class ProjectTaskControllerTest {
-        private static readonly Mock<IFindProjectTaskInPort> _findProjectTaskInPort;
-        private static readonly Mock<IAddProjectTaskInPort> _addProjectTaskInPort;
-        private static readonly ProjectTaskDTOValidator _validator = new();
         private static readonly ProjectTaskDTO _projectTaskDTO;
-        private static bool _created;
 
-        private static readonly ProjectTaskController _projectTaskController;
+        private readonly Mock<IFindProjectTaskInPort> _findProjectTaskInPort;
+        private readonly Mock<IAddProjectTaskInPort> _addProjectTaskInPort;
+        private readonly ProjectTaskDTOValidator _validator = new();
+        private bool _created;
+
+        private readonly ProjectTaskController _projectTaskController;
 
         static ProjectTaskControllerTest() {
-            _findProjectTaskInPort = new Mock<IFindProjectTaskInPort>();
-            _addProjectTaskInPort = new Mock<IAddProjectTaskInPort>();
-
             DateTime dateTime = new(2024, 1, 1, 12,
                                     0, 0);
             _projectTaskDTO = new ProjectTaskDTO {
@@ -31,6 +29,11 @@ namespace TimeRecorderAPITests.Controller {
                 ProjectID = Guid.NewGuid(),
                 TagIDs = new HashSet<Guid> { Guid.NewGuid() }
             };
+        }
+
+        public ProjectTaskControllerTest() {
+            _findProjectTaskInPort = new Mock<IFindProjectTaskInPort>();
+            _addProjectTaskInPort = new Mock<IAddProjectTaskInPort>();
 
             SetupPorts();
 
@@ -39,7 +42,7 @@ namespace TimeRecorderAPITests.Controller {
                                                                _validator);
         }
 
-        private static void SetupPorts() {
+        private void SetupPorts() {
             _findProjectTaskInPort.When(() => !_created)
                                   .Setup(x => x.FindTask(It.IsAny<string>()))
                                   .ReturnsAsync((ProjectTaskDTO?) null);
@@ -49,7 +52,8 @@ namespace TimeRecorderAPITests.Controller {
 
             _addProjectTaskInPort.When(() => !_created)
                                  .Setup(x => x.AddTask(_projectTaskDTO))
-                                 .ReturnsAsync(_projectTaskDTO).Callback(() => _created = true);
+                                 .ReturnsAsync(_projectTaskDTO)
+                                 .Callback(() => _created = true);
             _addProjectTaskInPort.When(() => _created)
                                  .Setup(x => x.AddTask(_projectTaskDTO))
                                  .ReturnsAsync((ProjectTaskDTO?) null);
@@ -60,10 +64,6 @@ namespace TimeRecorderAPITests.Controller {
             _addProjectTaskInPort.When(() => _created)
                                  .Setup(x => x.ReplaceTask(_projectTaskDTO.ID.ToString()!, It.IsAny<ProjectTaskDTO>()))
                                  .ReturnsAsync(_projectTaskDTO);
-        }
-
-        public ProjectTaskControllerTest() {
-            _created = false;
         }
 
         [Fact(DisplayName = "Given a existing id " +
@@ -106,7 +106,7 @@ namespace TimeRecorderAPITests.Controller {
             result.Should().BeOfType<ConflictResult>();
         }
 
-        [Fact(DisplayName = "Given a id and valid ProjectTaskDTO " +
+        [Fact(DisplayName = "Given a exist id and valid ProjectTaskDTO " +
                             "When putting a ProjectTask " +
                             "Then return Ok ProjectTaskDTO")]
         public async Task PutValidProjectTaskDTO() {
@@ -116,6 +116,15 @@ namespace TimeRecorderAPITests.Controller {
 
             result.Should().BeOfType<OkObjectResult>()
                   .Which.Value.Should().BeEquivalentTo(_projectTaskDTO);
+        }
+
+        [Fact(DisplayName = "Given a non-exist id and ProjectTaskDTO " +
+                            "When putting a ProjectTask " +
+                            "Then return NotFound")]
+        public async Task PutNonExistingProjectTaskDTO() {
+            IActionResult result = await _projectTaskController.Put(_projectTaskDTO.ID.ToString()!, _projectTaskDTO);
+
+            result.Should().BeOfType<NotFoundResult>();
         }
     }
 }

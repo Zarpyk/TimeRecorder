@@ -41,6 +41,7 @@ namespace TimeRecorderAPI.Adapter.In.RestController {
 
             ProjectTaskDTO? task = await addProjectTaskOutPort.ReplaceTask(id, projectTaskDTO);
 
+            if (task == null) return NotFound();
             return Ok(task);
         }
     }
