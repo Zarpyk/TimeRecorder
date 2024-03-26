@@ -6,7 +6,7 @@ using TimeRecorderAPI.DTO;
 using TimeRecorderAPITests.Fixtures;
 using Xunit;
 
-namespace TimeRecorderAPITests.Service {
+namespace TimeRecorderAPITests.Service.ProjectTask {
     public class FindProjectTaskServiceTest : IClassFixture<ProjectTaskDTOFixture> {
         private readonly ProjectTaskDTOFixture _projectTaskDTO;
 

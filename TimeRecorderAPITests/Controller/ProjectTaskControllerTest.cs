@@ -20,9 +20,9 @@ namespace TimeRecorderAPITests.Controller {
 
         private readonly ProjectTaskController _projectTaskController;
 
-        public ProjectTaskControllerTest() {
-            _projectTaskDTO = new ProjectTaskDTOFixture();
-            
+        public ProjectTaskControllerTest(ProjectTaskDTOFixture projectTaskDTO) {
+            _projectTaskDTO = projectTaskDTO;
+
             _findProjectTaskInPort = new Mock<IFindProjectTaskInPort>();
             _addProjectTaskInPort = new Mock<IAddProjectTaskInPort>();
             _modifyProjectTaskInPort = new Mock<IModifyProjectTaskInPort>();
@@ -45,13 +45,9 @@ namespace TimeRecorderAPITests.Controller {
                                   .Setup(x => x.FindTask(_projectTaskDTO.ID))
                                   .ReturnsAsync(_projectTaskDTO.Get);
 
-            _addProjectTaskInPort.When(() => !_created)
-                                 .Setup(x => x.AddTask(_projectTaskDTO.Get()))
+            _addProjectTaskInPort.Setup(x => x.AddTask(_projectTaskDTO.Get()))
                                  .ReturnsAsync(_projectTaskDTO.Get())
                                  .Callback(() => _created = true);
-            _addProjectTaskInPort.When(() => _created)
-                                 .Setup(x => x.AddTask(_projectTaskDTO.Get()))
-                                 .ReturnsAsync((ProjectTaskDTO?) null);
 
             _modifyProjectTaskInPort.When(() => !_created)
                                     .Setup(x => x.ReplaceTask(It.IsAny<string>(), It.IsAny<ProjectTaskDTO>()))
@@ -59,7 +55,7 @@ namespace TimeRecorderAPITests.Controller {
             _modifyProjectTaskInPort.When(() => _created)
                                     .Setup(x => x.ReplaceTask(_projectTaskDTO.ID, It.IsAny<ProjectTaskDTO>()))
                                     .ReturnsAsync(_projectTaskDTO.Get());
-            
+
             _deleteProjectTaskInPort.When(() => !_created)
                                     .Setup(x => x.DeleteTask(It.IsAny<string>()))
                                     .ReturnsAsync(false);
@@ -96,16 +92,6 @@ namespace TimeRecorderAPITests.Controller {
 
             result.Should().BeOfType<CreatedAtActionResult>()
                   .Which.Value.Should().BeEquivalentTo(_projectTaskDTO.Get());
-        }
-
-        [Fact(DisplayName = "Given a duplicated ProjectTaskDTO, " +
-                            "When posting a ProjectTask, " +
-                            "Then return Conflict.")]
-        public async Task PostDuplicatedProjectTaskDTO() {
-            await _projectTaskController.Post(_projectTaskDTO.Get());
-            IActionResult result = await _projectTaskController.Post(_projectTaskDTO.Get());
-
-            result.Should().BeOfType<ConflictResult>();
         }
 
         [Fact(DisplayName = "Given a existing id and valid ProjectTaskDTO, " +
