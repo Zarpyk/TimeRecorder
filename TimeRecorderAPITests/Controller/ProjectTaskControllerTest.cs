@@ -54,7 +54,10 @@ namespace TimeRecorderAPITests.Controller {
                                     .ReturnsAsync((ProjectTaskDTO?) null);
             _modifyProjectTaskInPort.When(() => _created)
                                     .Setup(x => x.ReplaceTask(_projectTaskDTO.ID, It.IsAny<ProjectTaskDTO>()))
-                                    .ReturnsAsync(_projectTaskDTO.Get());
+                                    .ReturnsAsync((string id, ProjectTaskDTO projectTaskDTO) => {
+                                         projectTaskDTO.ID = new Guid(id);
+                                         return projectTaskDTO;
+                                     });
 
             _deleteProjectTaskInPort.When(() => !_created)
                                     .Setup(x => x.DeleteTask(It.IsAny<string>()))
@@ -99,11 +102,20 @@ namespace TimeRecorderAPITests.Controller {
                             "Then return Ok ProjectTaskDTO.")]
         public async Task PutValidProjectTaskDTO() {
             await _projectTaskController.Post(_projectTaskDTO.Get());
-            _projectTaskDTO.Get().Name = "Task 2";
-            IActionResult result = await _projectTaskController.Put(_projectTaskDTO.ID, _projectTaskDTO.Get());
+            ProjectTaskDTO newProjectTaskDTO = new() {
+                ID = null,
+                Name = "New Name",
+                TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
+                TimeRecords = _projectTaskDTO.Get().TimeRecords,
+                ProjectID = _projectTaskDTO.Get().ProjectID,
+                TagIDs = _projectTaskDTO.Get().TagIDs
+            };
 
+            IActionResult result = await _projectTaskController.Put(_projectTaskDTO.ID, newProjectTaskDTO);
+
+            newProjectTaskDTO.ID = new Guid(_projectTaskDTO.ID);
             result.Should().BeOfType<OkObjectResult>()
-                  .Which.Value.Should().BeEquivalentTo(_projectTaskDTO.Get());
+                  .Which.Value.Should().BeEquivalentTo(newProjectTaskDTO);
         }
 
         [Fact(DisplayName = "Given a non-existing id and ProjectTaskDTO, " +
