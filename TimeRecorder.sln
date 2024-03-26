@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorder", "TimeRecorder\TimeRecorder.csproj", "{690E5535-480A-4FE3-9B47-80789E139E01}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorderAPI", "TimeRecorderAPI\TimeRecorderAPI.csproj", "{E11F98D2-D12E-4845-883C-96DA6860FD0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeRecorderDomain", "TimeRecorderDomain\TimeRecorderDomain.csproj", "{30D625BC-45B8-4845-9D8F-160866FC44DE}"
@@ -24,12 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{690E5535-480A-4FE3-9B47-80789E139E01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{690E5535-480A-4FE3-9B47-80789E139E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{690E5535-480A-4FE3-9B47-80789E139E01}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{690E5535-480A-4FE3-9B47-80789E139E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{690E5535-480A-4FE3-9B47-80789E139E01}.Release|Any CPU.Build.0 = Release|Any CPU
-		{690E5535-480A-4FE3-9B47-80789E139E01}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{E11F98D2-D12E-4845-883C-96DA6860FD0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E11F98D2-D12E-4845-883C-96DA6860FD0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E11F98D2-D12E-4845-883C-96DA6860FD0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
