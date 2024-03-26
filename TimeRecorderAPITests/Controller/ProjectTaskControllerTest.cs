@@ -90,7 +90,7 @@ namespace TimeRecorderAPITests.Controller {
                   .Which.Value.Should().BeEquivalentTo(_projectTaskDTO);
         }
 
-        [Fact(DisplayName = "Given a non exist id " +
+        [Fact(DisplayName = "Given a non-existing id " +
                             "When getting a ProjectTask " +
                             "Then return NotFound")]
         public async Task GetProjectTaskDTOWithNonExistingID() {
@@ -119,7 +119,7 @@ namespace TimeRecorderAPITests.Controller {
             result.Should().BeOfType<ConflictResult>();
         }
 
-        [Fact(DisplayName = "Given a exist id and valid ProjectTaskDTO " +
+        [Fact(DisplayName = "Given a existing id and valid ProjectTaskDTO " +
                             "When putting a ProjectTask " +
                             "Then return Ok ProjectTaskDTO")]
         public async Task PutValidProjectTaskDTO() {
@@ -131,7 +131,7 @@ namespace TimeRecorderAPITests.Controller {
                   .Which.Value.Should().BeEquivalentTo(_projectTaskDTO);
         }
 
-        [Fact(DisplayName = "Given a non-exist id and ProjectTaskDTO " +
+        [Fact(DisplayName = "Given a non-existing id and ProjectTaskDTO " +
                             "When putting a ProjectTask " +
                             "Then return NotFound")]
         public async Task PutNonExistingProjectTaskDTO() {
@@ -150,7 +150,7 @@ namespace TimeRecorderAPITests.Controller {
             result.Should().BeOfType<OkResult>();
         }
 
-        [Fact(DisplayName = "Given a non exist id " +
+        [Fact(DisplayName = "Given a non-existing id " +
                             "When deleting a ProjectTask " +
                             "Then return NotFound")]
         public async Task DeleteProjectTaskDTOWithNonExistingID() {
