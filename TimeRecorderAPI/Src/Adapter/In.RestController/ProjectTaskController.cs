@@ -51,7 +51,9 @@ namespace TimeRecorderAPI.Adapter.In.RestController {
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id) {
-            await deleteProjectTaskOutPort.DeleteTask(id);
+            bool deleteTask = await deleteProjectTaskOutPort.DeleteTask(id);
+            
+            if (!deleteTask) return NotFound();
             return Ok();
         }
     }

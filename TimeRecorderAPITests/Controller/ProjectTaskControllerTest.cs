@@ -70,6 +70,13 @@ namespace TimeRecorderAPITests.Controller {
             _modifyProjectTaskInPort.When(() => _created)
                                     .Setup(x => x.ReplaceTask(_projectTaskDTO.ID.ToString()!, It.IsAny<ProjectTaskDTO>()))
                                     .ReturnsAsync(_projectTaskDTO);
+            
+            _deleteProjectTaskInPort.When(() => !_created)
+                                    .Setup(x => x.DeleteTask(It.IsAny<string>()))
+                                    .ReturnsAsync(false);
+            _deleteProjectTaskInPort.When(() => _created)
+                                    .Setup(x => x.DeleteTask(_projectTaskDTO.ID.ToString()!))
+                                    .ReturnsAsync(true);
         }
 
         [Fact(DisplayName = "Given a existing id " +
@@ -141,6 +148,15 @@ namespace TimeRecorderAPITests.Controller {
             IActionResult result = await _projectTaskController.Delete(_projectTaskDTO.ID.ToString()!);
 
             result.Should().BeOfType<OkResult>();
+        }
+
+        [Fact(DisplayName = "Given a non exist id " +
+                            "When deleting a ProjectTask " +
+                            "Then return NotFound")]
+        public async Task DeleteProjectTaskDTOWithNonExistingID() {
+            IActionResult result = await _projectTaskController.Delete(_projectTaskDTO.ID.ToString()!);
+
+            result.Should().BeOfType<NotFoundResult>();
         }
     }
 }
