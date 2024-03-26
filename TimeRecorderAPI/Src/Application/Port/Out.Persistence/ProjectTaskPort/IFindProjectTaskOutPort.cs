@@ -1,7 +1,7 @@
-﻿using TimeRecorderDomain.Models;
+﻿using TimeRecorderAPI.DTO;
 
 namespace TimeRecorderAPI.Application.Port.Out.Persistence.ProjectTaskPort {
     public interface IFindProjectTaskOutPort {
-        public Task<ProjectTaskController?> FindTask(string id);
+        public Task<ProjectTaskDTO?> FindTask(string id);
     }
 }
