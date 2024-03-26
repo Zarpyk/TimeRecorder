@@ -4,9 +4,9 @@ using TimeRecorderDomain.Models;
 
 namespace TimeRecorderAPI.Factory {
     public class ProjectTaskFactory(IDataBaseManager dataBaseManager) {
-        public async Task<ProjectTaskController?> CreateTask(ProjectTaskDTO? projectTaskDTO) {
+        public async Task<ProjectTask?> CreateTask(ProjectTaskDTO? projectTaskDTO) {
             if (projectTaskDTO == null) return null;
-            ProjectTaskController projectTaskController = new() {
+            ProjectTask projectTaskController = new() {
                 Name = projectTaskDTO.Name,
                 TimeEstimated = projectTaskDTO.TimeEstimated,
                 TimeRecords = projectTaskDTO.TimeRecords
@@ -26,7 +26,7 @@ namespace TimeRecorderAPI.Factory {
             return projectTaskController;
         }
 
-        public ProjectTaskDTO? CreateTaskDTO(ProjectTaskController? projectTask) {
+        public ProjectTaskDTO? CreateTaskDTO(ProjectTask? projectTask) {
             if (projectTask == null) return null;
             ProjectTaskDTO projectTaskDTO = new() {
                 ID = new Guid(projectTask.ID),

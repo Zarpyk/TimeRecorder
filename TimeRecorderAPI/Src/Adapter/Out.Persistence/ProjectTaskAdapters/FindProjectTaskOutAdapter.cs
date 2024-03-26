@@ -2,13 +2,19 @@
 using TimeRecorderAPI.Configuration.Adapter;
 using TimeRecorderAPI.DB;
 using TimeRecorderAPI.DTO;
+using TimeRecorderAPI.Factory;
 using TimeRecorderDomain.Models;
 
 namespace TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters {
     [PortAdapter(typeof(IFindProjectTaskOutPort))]
-    public class FindProjectTaskOutAdapter(IDataBaseManager db) : IFindProjectTaskOutPort {
+    public class FindProjectTaskOutAdapter(
+        IDataBaseManager db,
+        ProjectTaskFactory factory
+    ) : IFindProjectTaskOutPort {
         public async Task<ProjectTaskDTO?> FindTask(string id) {
-            throw new NotImplementedException();
+            ProjectTask? projectTask = await db.Find<ProjectTask>(id);
+            
+            return factory.CreateTaskDTO(projectTask);
         }
     }
 }

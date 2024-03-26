@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using TimeRecorderAPI.Adapter.In.RestController;
 using TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort;
 using TimeRecorderAPI.DTO;
 using TimeRecorderAPITests.Fixtures;
 using Xunit;
-using ProjectTaskController = TimeRecorderAPI.Adapter.In.RestController.ProjectTaskController;
 
 namespace TimeRecorderAPITests.Controller {
     public class ProjectTaskControllerTest : IClassFixture<ProjectTaskDTOFixture> {
