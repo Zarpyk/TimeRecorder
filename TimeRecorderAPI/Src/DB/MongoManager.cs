@@ -107,6 +107,7 @@ namespace TimeRecorderAPI.DB {
         }
 
         public async Task<List<T>> Find<T>(string id, int quantity) where T : IDBObject, new() {
+            if (string.IsNullOrWhiteSpace(id)) return []; 
             return await Find<T>(v => v.ID == id, quantity);
         }
 
