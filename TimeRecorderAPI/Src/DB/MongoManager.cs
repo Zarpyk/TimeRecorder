@@ -206,11 +206,13 @@ namespace TimeRecorderAPI.DB {
             }
         }
 
-        public async Task Delete<T>(string id) where T : IDBObject, new() {
+        public async Task<bool> Delete<T>(string id) where T : IDBObject, new() {
             try {
-                await _db!.GetCollection<T>(typeof(T).Name.ToLower()).DeleteOneAsync(x => x.ID == id);
+                DeleteResult result = await _db!.GetCollection<T>(typeof(T).Name.ToLower()).DeleteOneAsync(x => x.ID == id);
+                return result.DeletedCount != 0;
             } catch (MongoConnectionException) {
                 CheckStatus();
+                return false;
             }
         }
 

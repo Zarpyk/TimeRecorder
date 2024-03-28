@@ -20,7 +20,7 @@ namespace TimeRecorderAPI.DB {
         public Task<bool> Replace<T>(T obj) where T : IDBObject, new();
         public Task ReplaceAll<T>(List<T> list) where T : IDBObject, new();
 
-        public Task Delete<T>(string id) where T : IDBObject, new();
+        public Task<bool> Delete<T>(string id) where T : IDBObject, new();
         public Task Delete<T>(T obj) where T : IDBObject, new();
         public Task Delete<T>(Predicate<T> predicate) where T : IDBObject, new();
         public Task Delete<T>(List<T> toDeleteProducts) where T : IDBObject, new();

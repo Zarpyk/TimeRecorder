@@ -29,6 +29,9 @@ namespace TimeRecorderAPITests.Fixtures {
 
             _dataBaseManager.Setup(x => x.Replace(It.IsAny<ProjectTask>()))
                             .ReturnsAsync((ProjectTask task) => task.ID == projectTaskDTO.ID);
+            
+            _dataBaseManager.Setup(x => x.Delete<ProjectTask>(It.IsAny<string>()))
+                            .ReturnsAsync((string id) => id == projectTaskDTO.ID);
         }
 
         public IDataBaseManager Get() {
