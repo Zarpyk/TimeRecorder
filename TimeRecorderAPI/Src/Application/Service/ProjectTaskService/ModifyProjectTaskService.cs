@@ -5,7 +5,7 @@ using TimeRecorderAPI.DTO;
 namespace TimeRecorderAPI.Application.Service.ProjectTaskService {
     public class ModifyProjectTaskService(IModifyProjectTaskOutPort outPort) : IModifyProjectTaskInPort {
         public Task<ProjectTaskDTO?> ReplaceTask(string id, ProjectTaskDTO projectTaskDTO) {
-            return outPort.ModifyTask(id, projectTaskDTO);
+            return outPort.ReplaceTask(id, projectTaskDTO);
         }
     }
 }

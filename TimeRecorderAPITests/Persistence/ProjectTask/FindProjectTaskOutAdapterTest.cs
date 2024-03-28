@@ -21,7 +21,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
 
         [Fact(DisplayName = "Given a existing ID, " +
                             "When find ProjectTask, " +
-                            "Then return the ProjectTaskDTO")]
+                            "Then the found ProjectTaskDTO is returned.")]
         public async Task FindExistingProjectTask() {
             ProjectTaskDTO? findTask = await _findProjectTaskOutAdapter.FindTask(_projectTaskDTO.ID);
 
@@ -30,7 +30,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
 
         [Fact(DisplayName = "Given a non-existing ID, " +
                             "When find ProjectTask, " +
-                            "Then return null")]
+                            "Then null is returned.")]
         public async Task FindNonExistingProjectTask() {
             ProjectTaskDTO? findTask = await _findProjectTaskOutAdapter.FindTask("non-existing-id");
 

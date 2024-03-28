@@ -22,7 +22,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
         // TODO Change this to create automatically the Project and Tag
         [Fact(DisplayName = "Given ProjectTaskDTO with non-existing Project and Tag, " +
                             "When add ProjectTask, " +
-                            "Then return the ProjectTaskDTO without the Project and Tag")]
+                            "Then ProjectTaskDTO without the Project and Tag is returned.")]
         public async Task FindExistingProjectTask() {
             ProjectTaskDTO findTask = await _addProjectTaskOutAdapter.AddTask(_projectTaskDTO.Get());
 

@@ -69,7 +69,7 @@ namespace TimeRecorderAPITests.Controller {
 
         [Fact(DisplayName = "Given a existing id, " +
                             "When getting a ProjectTask, " +
-                            "Then return Ok ProjectTaskDTO.")]
+                            "Then Ok ProjectTaskDTO returned.")]
         public async Task GetProjectTaskDTOWithExistingID() {
             await _projectTaskController.Post(_projectTaskDTO.Get());
             IActionResult result = await _projectTaskController.Get(_projectTaskDTO.ID);
@@ -80,7 +80,7 @@ namespace TimeRecorderAPITests.Controller {
 
         [Fact(DisplayName = "Given a non-existing id, " +
                             "When getting a ProjectTask, " +
-                            "Then return NotFound.")]
+                            "Then NotFound is returned.")]
         public async Task GetProjectTaskDTOWithNonExistingID() {
             IActionResult result = await _projectTaskController.Get(_projectTaskDTO.ID);
 
@@ -89,7 +89,7 @@ namespace TimeRecorderAPITests.Controller {
 
         [Fact(DisplayName = "Given a valid ProjectTaskDTO, " +
                             "When posting a ProjectTask, " +
-                            "Then return Created ProjectTaskDTO.")]
+                            "Then Created ProjectTaskDTO is returned.")]
         public async Task PostValidProjectTaskDTO() {
             IActionResult result = await _projectTaskController.Post(_projectTaskDTO.Get());
 
@@ -99,7 +99,7 @@ namespace TimeRecorderAPITests.Controller {
 
         [Fact(DisplayName = "Given a existing id and valid ProjectTaskDTO, " +
                             "When putting a ProjectTask, " +
-                            "Then return Ok ProjectTaskDTO.")]
+                            "Then Ok ProjectTaskDTO is returned.")]
         public async Task PutValidProjectTaskDTO() {
             await _projectTaskController.Post(_projectTaskDTO.Get());
             ProjectTaskDTO newProjectTaskDTO = new() {
@@ -120,7 +120,7 @@ namespace TimeRecorderAPITests.Controller {
 
         [Fact(DisplayName = "Given a non-existing id and ProjectTaskDTO, " +
                             "When putting a ProjectTask, " +
-                            "Then return NotFound.")]
+                            "Then NotFound is returned.")]
         public async Task PutNonExistingProjectTaskDTO() {
             IActionResult result = await _projectTaskController.Put(_projectTaskDTO.ID, _projectTaskDTO.Get());
 
@@ -129,7 +129,7 @@ namespace TimeRecorderAPITests.Controller {
 
         [Fact(DisplayName = "Given a existing id, " +
                             "When deleting a ProjectTask, " +
-                            "Then return Ok.")]
+                            "Then Ok is returned.")]
         public async Task DeleteProjectTaskDTOWithExistingID() {
             await _projectTaskController.Post(_projectTaskDTO.Get());
             IActionResult result = await _projectTaskController.Delete(_projectTaskDTO.ID);
@@ -139,7 +139,7 @@ namespace TimeRecorderAPITests.Controller {
 
         [Fact(DisplayName = "Given a non-existing id, " +
                             "When deleting a ProjectTask, " +
-                            "Then return NotFound.")]
+                            "Then NotFound is returned.")]
         public async Task DeleteProjectTaskDTOWithNonExistingID() {
             IActionResult result = await _projectTaskController.Delete(_projectTaskDTO.ID);
 

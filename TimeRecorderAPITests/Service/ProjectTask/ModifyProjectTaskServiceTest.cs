@@ -24,7 +24,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         }
 
         private void SetupPorts() {
-            _modifyProjectTaskOutPort.Setup(x => x.ModifyTask(_projectTaskDTO.ID, It.IsAny<ProjectTaskDTO>()))
+            _modifyProjectTaskOutPort.Setup(x => x.ReplaceTask(_projectTaskDTO.ID, It.IsAny<ProjectTaskDTO>()))
                                      .ReturnsAsync((string id, ProjectTaskDTO projectTaskDTO) => {
                                           projectTaskDTO.ID = new Guid(id);
                                           return projectTaskDTO;
@@ -33,7 +33,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
 
         [Fact(DisplayName = "Given a existing ID, " +
                             "When replace ProjectTask , " +
-                            "Then the new ProjectTask is returned.")]
+                            "Then the modified ProjectTask is returned.")]
         public async Task ReplaceExistingTask() {
             ProjectTaskDTO newProjectTaskDTO = new() {
                 ID = null,
@@ -45,6 +45,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
             };
             
             ProjectTaskDTO? projectTaskDTO = await _modifyProjectTaskService.ReplaceTask(_projectTaskDTO.ID, newProjectTaskDTO);
+            newProjectTaskDTO.ID = new Guid(_projectTaskDTO.ID);
             projectTaskDTO.Should().BeEquivalentTo(newProjectTaskDTO);
         }
         
