@@ -26,13 +26,12 @@ namespace TimeRecorderAPI.Adapter.In.RestController {
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProjectTaskDTO))]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationExceptionResponse))]
         public async Task<IActionResult> Post(ProjectTaskDTO projectTaskDTO) {
             await validator.ValidateData(projectTaskDTO);
 
-            ProjectTaskDTO? addTask = await addProjectTaskOutPort.AddTask(projectTaskDTO);
-            if (addTask == null) return Conflict();
+            ProjectTaskDTO addTask = await addProjectTaskOutPort.AddTask(projectTaskDTO);
+            
             return CreatedAtAction(nameof(Get), new { id = addTask.ID }, addTask);
         }
 
