@@ -50,6 +50,8 @@ namespace TimeRecorderAPI.Adapter.In.RestController {
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(string id) {
             bool deleteTask = await deleteProjectTaskOutPort.DeleteTask(id);
             
