@@ -1,5 +1,5 @@
 ﻿using TimeRecorderAPI.DB;
-using TimeRecorderAPI.DTO;
+using TimeRecorderDomain.DTO;
 using TimeRecorderDomain.Models;
 
 namespace TimeRecorderAPI.Factory {
@@ -28,8 +28,7 @@ namespace TimeRecorderAPI.Factory {
 
         public ProjectTaskDTO? CreateTaskDTO(ProjectTask? projectTask) {
             if (projectTask == null) return null;
-            ProjectTaskDTO projectTaskDTO = new() {
-                ID = new Guid(projectTask.ID),
+            ProjectTaskDTO projectTaskDTO = new(new Guid(projectTask.ID)) {
                 Name = projectTask.Name,
                 TimeEstimated = projectTask.TimeEstimated,
                 TimeRecords = projectTask.TimeRecords,

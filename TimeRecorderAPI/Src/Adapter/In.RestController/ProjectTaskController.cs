@@ -4,6 +4,7 @@ using TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort;
 using TimeRecorderAPI.DTO;
 using TimeRecorderAPI.Exceptions.Responses;
 using TimeRecorderAPI.Extensions;
+using TimeRecorderDomain.DTO;
 
 namespace TimeRecorderAPI.Adapter.In.RestController {
     [ApiController]

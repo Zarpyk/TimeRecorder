@@ -5,6 +5,7 @@ using TimeRecorderAPI.Adapter.In.RestController;
 using TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort;
 using TimeRecorderAPI.DTO;
 using TimeRecorderAPITests.Fixtures;
+using TimeRecorderDomain.DTO;
 using Xunit;
 
 namespace TimeRecorderAPITests.Controller {
@@ -102,8 +103,7 @@ namespace TimeRecorderAPITests.Controller {
                             "Then Ok ProjectTaskDTO is returned.")]
         public async Task PutValidProjectTaskDTO() {
             await _projectTaskController.Post(_projectTaskDTO.Get());
-            ProjectTaskDTO newProjectTaskDTO = new() {
-                ID = null,
+            ProjectTaskDTO newProjectTaskDTO = new(null) {
                 Name = "New Name",
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,

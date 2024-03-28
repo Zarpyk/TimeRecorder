@@ -3,6 +3,7 @@ using TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters;
 using TimeRecorderAPI.DTO;
 using TimeRecorderAPI.Factory;
 using TimeRecorderAPITests.Fixtures;
+using TimeRecorderDomain.DTO;
 using Xunit;
 
 namespace TimeRecorderAPITests.Persistence.ProjectTask {
@@ -18,9 +19,8 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
 
             ProjectTaskFactory factory = new(dataBase.Get());
             _modifyProjectTaskOutAdapter = new ModifyProjectTaskOutAdapter(dataBase.Get(), factory);
-            
-            _newProjectTaskDTO = new ProjectTaskDTO {
-                ID = null,
+
+            _newProjectTaskDTO = new ProjectTaskDTO(null) {
                 Name = "New Name",
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,

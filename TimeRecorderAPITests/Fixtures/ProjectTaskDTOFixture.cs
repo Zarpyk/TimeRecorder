@@ -1,5 +1,5 @@
-﻿using TimeRecorderAPI.DTO;
-using TimeRecorderDomain.Models;
+﻿using TimeRecorderDomain.DTO;
+using TimeRecorderDomain.Shared;
 
 namespace TimeRecorderAPITests.Fixtures {
     public class ProjectTaskDTOFixture {
@@ -8,8 +8,7 @@ namespace TimeRecorderAPITests.Fixtures {
         public ProjectTaskDTOFixture() {
             DateTime dateTime = new(2024, 1, 1, 12,
                                     0, 0);
-            _projectTaskDTO = new ProjectTaskDTO {
-                ID = Guid.NewGuid(),
+            _projectTaskDTO = new ProjectTaskDTO(Guid.NewGuid()) {
                 Name = "Task 1",
                 TimeEstimated = TimeSpan.FromHours(1),
                 TimeRecords = new HashSet<TimeRecord> { new(dateTime.AddHours(-1), dateTime) },

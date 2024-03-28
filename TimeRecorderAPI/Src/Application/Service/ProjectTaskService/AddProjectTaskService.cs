@@ -2,6 +2,7 @@
 using TimeRecorderAPI.Application.Port.Out.Persistence.ProjectTaskPort;
 using TimeRecorderAPI.Configuration.Adapter;
 using TimeRecorderAPI.DTO;
+using TimeRecorderDomain.DTO;
 
 namespace TimeRecorderAPI.Application.Service.ProjectTaskService {
     [PortAdapter(typeof(IAddProjectTaskInPort))]

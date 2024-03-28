@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters;
-using TimeRecorderAPI.DTO;
 using TimeRecorderAPI.Factory;
 using TimeRecorderAPITests.Fixtures;
+using TimeRecorderDomain.DTO;
 using Xunit;
 
 namespace TimeRecorderAPITests.Persistence.ProjectTask {
@@ -24,8 +24,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
                             "When add ProjectTask, " +
                             "Then ProjectTaskDTO without the Project and Tag is returned.")]
         public async Task FindExistingProjectTask() {
-            ProjectTaskDTO newProjectTaskDTO = new() {
-                ID = _projectTaskDTO.Get().ID,
+            ProjectTaskDTO newProjectTaskDTO = new(_projectTaskDTO.Get().ID) {
                 Name = _projectTaskDTO.Get().Name,
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,

@@ -1,4 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using TimeRecorderDomain.DTO;
+using TimeRecorderDomain.Shared;
 
 namespace TimeRecorderDomain.Models {
     public class ProjectTask : IDBObject {
@@ -9,10 +11,5 @@ namespace TimeRecorderDomain.Models {
         public HashSet<TimeRecord>? TimeRecords { get; set; }
         public Project? Project { get; set; }
         public HashSet<Tag>? Tags { get; set; }
-    }
-
-    public record TimeRecord(DateTime StartTime, DateTime EndTime) {
-        public DateTime StartTime { get; set; } = StartTime;
-        public DateTime EndTime { get; set; } = EndTime;
     }
 }
