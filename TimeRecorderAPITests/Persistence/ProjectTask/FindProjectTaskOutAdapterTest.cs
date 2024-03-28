@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters;
-using TimeRecorderAPI.DTO;
 using TimeRecorderAPI.Factory;
 using TimeRecorderAPITests.Fixtures;
 using TimeRecorderDomain.DTO;

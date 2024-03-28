@@ -2,7 +2,6 @@
 using Moq;
 using TimeRecorderAPI.Application.Port.Out.Persistence.ProjectTaskPort;
 using TimeRecorderAPI.Application.Service.ProjectTaskService;
-using TimeRecorderAPI.DTO;
 using TimeRecorderAPITests.Fixtures;
 using TimeRecorderDomain.DTO;
 using Xunit;

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TimeRecorderAPI.Adapter.In.RestController;
 using TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort;
-using TimeRecorderAPI.DTO;
+using TimeRecorderAPI.Validators;
 using TimeRecorderAPITests.Fixtures;
 using TimeRecorderDomain.DTO;
 using Xunit;

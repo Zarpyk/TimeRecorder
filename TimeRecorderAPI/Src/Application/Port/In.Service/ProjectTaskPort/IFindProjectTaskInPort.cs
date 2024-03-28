@@ -1,5 +1,4 @@
-﻿using TimeRecorderAPI.DTO;
-using TimeRecorderDomain.DTO;
+﻿using TimeRecorderDomain.DTO;
 
 namespace TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort {
     public interface IFindProjectTaskInPort {

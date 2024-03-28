@@ -1,7 +1,6 @@
 ﻿using TimeRecorderAPI.Application.Port.Out.Persistence.ProjectTaskPort;
 using TimeRecorderAPI.Configuration.Adapter;
 using TimeRecorderAPI.DB;
-using TimeRecorderAPI.DTO;
 using TimeRecorderAPI.Factory;
 using TimeRecorderDomain.DTO;
 using TimeRecorderDomain.Models;
