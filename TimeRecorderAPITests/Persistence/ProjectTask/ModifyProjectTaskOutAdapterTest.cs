@@ -19,7 +19,8 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
             ProjectTaskFactory factory = new(dataBase.Get());
             _modifyProjectTaskOutAdapter = new ModifyProjectTaskOutAdapter(dataBase.Get(), factory);
 
-            _newProjectTaskDTO = new ProjectTaskDTO(null) {
+            _newProjectTaskDTO = new ProjectTaskDTO {
+                ID = null,
                 Name = "New Name",
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,

@@ -13,6 +13,8 @@ namespace TimeRecorderAPI.Configuration {
                     Type = "string",
                     Example = new OpenApiString("00:00:00")
                 });
+                // Enable Swashbuckle.AspNetCore.Annotations
+                options.EnableAnnotations();
             });
         }
     }

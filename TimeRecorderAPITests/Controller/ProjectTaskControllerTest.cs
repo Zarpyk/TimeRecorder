@@ -103,7 +103,8 @@ namespace TimeRecorderAPITests.Controller {
                             "Then Ok ProjectTaskDTO is returned.")]
         public async Task PutValidProjectTaskDTO() {
             await _projectTaskController.Post(_projectTaskDTO.Get());
-            ProjectTaskDTO newProjectTaskDTO = new(null) {
+            ProjectTaskDTO newProjectTaskDTO = new() {
+                ID = null,
                 Name = "New Name",
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,

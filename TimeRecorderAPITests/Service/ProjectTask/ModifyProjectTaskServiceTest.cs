@@ -35,7 +35,8 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
                             "When replace ProjectTask , " +
                             "Then the modified ProjectTask is returned.")]
         public async Task ReplaceExistingTask() {
-            ProjectTaskDTO newProjectTaskDTO = new(null) {
+            ProjectTaskDTO newProjectTaskDTO = new() {
+                ID = null,
                 Name = "New Name",
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,
@@ -52,7 +53,8 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
                             "When replace ProjectTask , " +
                             "Then null is returned.")]
         public async Task ReplaceNonExistingTask() {
-            ProjectTaskDTO newProjectTaskDTO = new(null) {
+            ProjectTaskDTO newProjectTaskDTO = new() {
+                ID = null,
                 Name = "New Name",
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,

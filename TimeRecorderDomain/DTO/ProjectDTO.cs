@@ -1,8 +1,10 @@
-﻿namespace TimeRecorderDomain.DTO {
-    public record ProjectDTO(Guid? ID) {
-        public Guid? ID { get; internal set; } = ID;
+﻿using Swashbuckle.AspNetCore.Annotations;
+
+namespace TimeRecorderDomain.DTO {
+    public record ProjectDTO() {
+        [SwaggerSchema(ReadOnly = true)]
+        public Guid? ID { get; set; }
         public string? Name { get; set; }
         public string? Color { get; set; }
-
     }
 }

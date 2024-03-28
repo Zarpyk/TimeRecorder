@@ -28,7 +28,8 @@ namespace TimeRecorderAPI.Factory {
 
         public ProjectTaskDTO? CreateTaskDTO(ProjectTask? projectTask) {
             if (projectTask == null) return null;
-            ProjectTaskDTO projectTaskDTO = new(new Guid(projectTask.ID)) {
+            ProjectTaskDTO projectTaskDTO = new() {
+                ID = new Guid(projectTask.ID),
                 Name = projectTask.Name,
                 TimeEstimated = projectTask.TimeEstimated,
                 TimeRecords = projectTask.TimeRecords,

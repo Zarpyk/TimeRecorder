@@ -1,8 +1,10 @@
-﻿using TimeRecorderDomain.Shared;
+﻿using Swashbuckle.AspNetCore.Annotations;
+using TimeRecorderDomain.Shared;
 
 namespace TimeRecorderDomain.DTO {
-    public record ProjectTaskDTO(Guid? ID) {
-        public Guid? ID { get; internal set; } = ID;
+    public record ProjectTaskDTO() {
+        [SwaggerSchema(ReadOnly = true)]
+        public Guid? ID { get; set; }
         public string? Name { get; set; }
         public TimeSpan TimeEstimated { get; set; } = TimeSpan.Zero;
         public HashSet<TimeRecord>? TimeRecords { get; set; }
