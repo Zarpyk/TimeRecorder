@@ -107,7 +107,7 @@ namespace TimeRecorderAPI.DB {
         }
 
         public async Task<List<T>> Find<T>(string id, int quantity) where T : IDBObject, new() {
-            if (string.IsNullOrWhiteSpace(id)) return []; 
+            if (string.IsNullOrWhiteSpace(id)) return [];
             return await Find<T>(v => v.ID == id, quantity);
         }
 
@@ -182,11 +182,14 @@ namespace TimeRecorderAPI.DB {
             }
         }
 
-        public async Task Replace<T>(T obj) where T : IDBObject, new() {
+        public async Task<bool> Replace<T>(T obj) where T : IDBObject, new() {
             try {
-                await _db!.GetCollection<T>(typeof(T).Name.ToLower()).ReplaceOneAsync(v => v.ID == obj.ID, obj);
+                ReplaceOneResult result = await _db!.GetCollection<T>(typeof(T).Name.ToLower())
+                                                              .ReplaceOneAsync(v => v.ID == obj.ID, obj);
+                return result.MatchedCount != 0;
             } catch (MongoConnectionException) {
                 CheckStatus();
+                return false;
             }
         }
 

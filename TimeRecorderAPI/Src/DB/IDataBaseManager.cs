@@ -17,7 +17,7 @@ namespace TimeRecorderAPI.DB {
         public Task Insert<T>(T obj) where T : IDBObject, new();
         public Task InsertAll<T>(IEnumerable<T> list) where T : IDBObject, new();
 
-        public Task Replace<T>(T obj) where T : IDBObject, new();
+        public Task<bool> Replace<T>(T obj) where T : IDBObject, new();
         public Task ReplaceAll<T>(List<T> list) where T : IDBObject, new();
 
         public Task Delete<T>(string id) where T : IDBObject, new();
