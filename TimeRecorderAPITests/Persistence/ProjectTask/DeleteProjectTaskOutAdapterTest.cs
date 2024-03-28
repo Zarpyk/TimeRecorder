@@ -15,8 +15,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
             DataBaseFixture dataBase = new(projectTaskDTO);
             _projectTaskDTO = projectTaskDTO;
 
-            ProjectTaskFactory factory = new(dataBase.Get());
-            _deleteProjectTaskOutAdapter = new DeleteProjectTaskOutAdapter(dataBase.Get(), factory);
+            _deleteProjectTaskOutAdapter = new DeleteProjectTaskOutAdapter(dataBase.Get());
         }
 
         [Fact(DisplayName = "Given a existing ID, " +
