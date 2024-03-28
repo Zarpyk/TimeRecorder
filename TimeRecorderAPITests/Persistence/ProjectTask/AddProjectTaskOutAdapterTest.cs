@@ -24,10 +24,19 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
                             "When add ProjectTask, " +
                             "Then ProjectTaskDTO without the Project and Tag is returned.")]
         public async Task FindExistingProjectTask() {
-            ProjectTaskDTO findTask = await _addProjectTaskOutAdapter.AddTask(_projectTaskDTO.Get());
+            ProjectTaskDTO newProjectTaskDTO = new() {
+                ID = _projectTaskDTO.Get().ID,
+                Name = _projectTaskDTO.Get().Name,
+                TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
+                TimeRecords = _projectTaskDTO.Get().TimeRecords,
+                ProjectID = Guid.Empty,
+                TagIDs = new HashSet<Guid> { Guid.Empty }
+            };
+            
+            ProjectTaskDTO findTask = await _addProjectTaskOutAdapter.AddTask(newProjectTaskDTO);
 
             findTask.Should()
-                    .BeEquivalentTo(_projectTaskDTO.Get(),
+                    .BeEquivalentTo(newProjectTaskDTO,
                                     options => options.Excluding(x => x.ID)
                                                       .Excluding(x => x.ProjectID)
                                                       .Excluding(x => x.TagIDs))
