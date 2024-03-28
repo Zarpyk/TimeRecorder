@@ -16,7 +16,7 @@ namespace TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters {
             ProjectTask? projectTask = await factory.CreateTask(projectTaskDTO);
             projectTask!.ID = id;
             bool replace = await db.Replace(projectTask);
-            return !replace ? null : projectTaskDTO;
+            return !replace ? null : factory.CreateTaskDTO(projectTask);
         }
     }
 }
