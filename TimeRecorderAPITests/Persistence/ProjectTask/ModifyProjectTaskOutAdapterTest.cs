@@ -29,14 +29,20 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
             };
         }
 
-        [Fact(DisplayName = "Given a existing ID and ProjectTaskDTO, " +
+        [Fact(DisplayName = "Given a existing ID and ProjectTaskDTO with non-existing Project and Tag, " +
                             "When replace ProjectTask, " +
-                            "Then the modified ProjectTaskDTO is returned")]
+                            "Then the modified ProjectTaskDTO is returned without project and tag")]
         public async Task ReplaceExistingProjectTask() {
             ProjectTaskDTO? findTask = await _modifyProjectTaskOutAdapter.ReplaceTask(_projectTaskDTO.ID, _newProjectTaskDTO);
 
             _newProjectTaskDTO.ID = new Guid(_projectTaskDTO.ID);
-            findTask.Should().BeEquivalentTo(_newProjectTaskDTO);
+            findTask.Should()
+                    .BeEquivalentTo(_newProjectTaskDTO, options => options.Excluding(x => x.ID)
+                                                                          .Excluding(x => x.ProjectID)
+                                                                          .Excluding(x => x.TagIDs))
+                    .And.Match<ProjectTaskDTO>(x => x.ID != null && x.ID.ToString()! == _projectTaskDTO.ID &&
+                                                    x.ProjectID == null &&
+                                                    x.TagIDs!.Count == 0);
         }
 
         [Fact(DisplayName = "Given a non-existing ID and ProjectTaskDTO, " +

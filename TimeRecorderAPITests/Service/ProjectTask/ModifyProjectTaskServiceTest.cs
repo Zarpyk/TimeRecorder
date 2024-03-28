@@ -27,26 +27,36 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
             _modifyProjectTaskOutPort.Setup(x => x.ReplaceTask(_projectTaskDTO.ID, It.IsAny<ProjectTaskDTO>()))
                                      .ReturnsAsync((string id, ProjectTaskDTO projectTaskDTO) => {
                                           projectTaskDTO.ID = new Guid(id);
+                                          if (projectTaskDTO.ProjectID != _projectTaskDTO.Get().ProjectID)
+                                              projectTaskDTO.ProjectID = null;
+                                          if (projectTaskDTO.TagIDs!.First() != _projectTaskDTO.Get().TagIDs!.First())
+                                              projectTaskDTO.TagIDs = new();    
                                           return projectTaskDTO;
                                       });
         }
 
-        [Fact(DisplayName = "Given a existing ID, " +
+        [Fact(DisplayName = "Given a existing ID with non-existing Project and Tag, " +
                             "When replace ProjectTask , " +
-                            "Then the modified ProjectTask is returned.")]
+                            "Then the modified ProjectTask without Project and Tag is returned.")]
         public async Task ReplaceExistingTask() {
             ProjectTaskDTO newProjectTaskDTO = new() {
                 ID = null,
                 Name = "New Name",
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,
-                ProjectID = _projectTaskDTO.Get().ProjectID,
-                TagIDs = _projectTaskDTO.Get().TagIDs
+                ProjectID = Guid.Empty,
+                TagIDs = [Guid.Empty]
             };
 
             ProjectTaskDTO? projectTaskDTO = await _modifyProjectTaskService.ReplaceTask(_projectTaskDTO.ID, newProjectTaskDTO);
             newProjectTaskDTO.ID = new Guid(_projectTaskDTO.ID);
-            projectTaskDTO.Should().BeEquivalentTo(newProjectTaskDTO);
+            projectTaskDTO.Should()
+                          .BeEquivalentTo(newProjectTaskDTO, options => options.Excluding(x => x.ID)
+                                                                               .Excluding(x => x.ProjectID)
+                                                                               .Excluding(x => x.TagIDs))
+                          .And.Match<ProjectTaskDTO>(x => x.ID != null && x.ID.ToString()! == _projectTaskDTO.ID &&
+                                                          x.ProjectID == null &&
+                                                          x.TagIDs!.Count == 0);
         }
 
         [Fact(DisplayName = "Given a non-existing ID, " +
