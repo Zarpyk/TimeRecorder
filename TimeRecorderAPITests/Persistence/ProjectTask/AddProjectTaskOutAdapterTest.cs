@@ -31,7 +31,9 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
                                     options => options.Excluding(x => x.ID)
                                                       .Excluding(x => x.ProjectID)
                                                       .Excluding(x => x.TagIDs))
-                    .And.Match<ProjectTaskDTO>(x => x.ID != null && x.ID.ToString()! != _projectTaskDTO.ID);
+                    .And.Match<ProjectTaskDTO>(x => x.ID != null && x.ID.ToString()! != _projectTaskDTO.ID)
+                    .And.Match<ProjectTaskDTO>(x => x.ProjectID == null)
+                    .And.Match<ProjectTaskDTO>(x => x.TagIDs!.Count == 0);
         }
         
         // TODO Test for existing Project and Tag
