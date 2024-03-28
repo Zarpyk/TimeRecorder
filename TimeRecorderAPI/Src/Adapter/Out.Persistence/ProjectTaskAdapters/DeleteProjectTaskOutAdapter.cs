@@ -1,7 +1,7 @@
 ﻿using TimeRecorderAPI.Application.Port.Out.Persistence.ProjectTaskPort;
 using TimeRecorderAPI.Configuration.Adapter;
 using TimeRecorderAPI.DB;
-using TimeRecorderDomain.Models;
+using TimeRecorderAPI.Models;
 
 namespace TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters {
     [PortAdapter(typeof(IDeleteProjectTaskOutPort))]

@@ -1,29 +1,33 @@
-﻿using TimeRecorderAPI.DB;
+﻿using TimeRecorderAPI.Configuration.Factory;
+using TimeRecorderAPI.DB;
+using TimeRecorderAPI.Models;
 using TimeRecorderDomain.DTO;
-using TimeRecorderDomain.Models;
 
 namespace TimeRecorderAPI.Factory {
-    public class ProjectTaskFactory(IDataBaseManager dataBaseManager) {
+    [Factory]
+    public class ProjectTaskFactory(IDataBaseManager dataBaseManager, ProjectFactory projectFactory, TagFactory tagFactory) {
         public async Task<ProjectTask?> CreateTask(ProjectTaskDTO? projectTaskDTO) {
             if (projectTaskDTO == null) return null;
-            ProjectTask projectTaskController = new() {
+            ProjectTask projectTask = new() {
                 Name = projectTaskDTO.Name,
                 TimeEstimated = projectTaskDTO.TimeEstimated,
                 TimeRecords = projectTaskDTO.TimeRecords
             };
 
-            if (projectTaskDTO.ProjectID != null)
-                projectTaskController.Project = await dataBaseManager.Find<Project>(projectTaskDTO.ProjectID.ToString()!);
+            if (projectTaskDTO.Project != null)
+                projectTask.Project = await dataBaseManager.Find<Project>(projectTaskDTO.Project.ID.ToString()!);
 
-            if (projectTaskDTO.TagIDs != null) {
-                projectTaskController.Tags = [];
-                foreach (Guid tagID in projectTaskDTO.TagIDs) {
-                    Tag? tag = await dataBaseManager.Find<Tag>(tagID.ToString());
+            if (projectTaskDTO.Tags != null) {
+                projectTask.Tags = [];
+                foreach (Guid? tagID in projectTaskDTO.Tags.Select(x => x.ID)) {
+                    Tag? tag = await dataBaseManager.Find<Tag>(tagID.ToString()!);
                     if (tag == null) continue;
-                    projectTaskController.Tags.Add(tag);
+                    projectTask.Tags.Add(tag);
                 }
+                if (projectTask.Tags.Count == 0) projectTask.Tags = null;
             }
-            return projectTaskController;
+            
+            return projectTask;
         }
 
         public ProjectTaskDTO? CreateTaskDTO(ProjectTask? projectTask) {
@@ -33,8 +37,8 @@ namespace TimeRecorderAPI.Factory {
                 Name = projectTask.Name,
                 TimeEstimated = projectTask.TimeEstimated,
                 TimeRecords = projectTask.TimeRecords,
-                ProjectID = projectTask.Project == null ? null : new Guid(projectTask.Project.ID),
-                TagIDs = projectTask.Tags?.Select(tag => new Guid(tag.ID)).ToHashSet()
+                Project = projectFactory.CreateProjectDTO(projectTask.Project),
+                Tags = projectTask.Tags?.Select(tagFactory.CreateTagDTO).ToHashSet()
             };
             return projectTaskDTO;
         }

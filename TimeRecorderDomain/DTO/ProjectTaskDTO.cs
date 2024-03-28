@@ -8,7 +8,7 @@ namespace TimeRecorderDomain.DTO {
         public string? Name { get; set; }
         public TimeSpan TimeEstimated { get; set; } = TimeSpan.Zero;
         public HashSet<TimeRecord>? TimeRecords { get; set; }
-        public Guid? ProjectID { get; set; }
-        public HashSet<Guid>? TagIDs { get; set; }
+        public ProjectDTO? Project { get; set; }
+        public HashSet<TagDTO?>? Tags { get; set; }
     }
 }

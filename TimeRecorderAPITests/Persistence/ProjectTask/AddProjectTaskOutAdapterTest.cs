@@ -15,36 +15,19 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
             DataBaseFixture dataBase = new(projectTaskDTO);
             _projectTaskDTO = projectTaskDTO;
 
-            ProjectTaskFactory factory = new(dataBase.Get());
+            ProjectFactory projectFactory = new();
+            TagFactory tagFactory = new();
+            ProjectTaskFactory factory = new(dataBase.Get(), projectFactory, tagFactory);
             _addProjectTaskOutAdapter = new AddProjectTaskOutAdapter(dataBase.Get(), factory);
         }
 
-        // TODO Change this to create automatically the Project and Tag
-        [Fact(DisplayName = "Given ProjectTaskDTO with non-existing Project and Tag, " +
+        [Fact(DisplayName = "Given ProjectTaskDTO, " +
                             "When add ProjectTask, " +
-                            "Then ProjectTaskDTO without the Project and Tag is returned.")]
-        public async Task FindExistingProjectTask() {
-            ProjectTaskDTO newProjectTaskDTO = new() {
-                ID = _projectTaskDTO.Get().ID,
-                Name = _projectTaskDTO.Get().Name,
-                TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
-                TimeRecords = _projectTaskDTO.Get().TimeRecords,
-                ProjectID = Guid.Empty,
-                TagIDs = new HashSet<Guid> { Guid.Empty }
-            };
-            
-            ProjectTaskDTO findTask = await _addProjectTaskOutAdapter.AddTask(newProjectTaskDTO);
+                            "Then ProjectTaskDTO is returned.")]
+        public async Task AddProjectTaskWithValidProjectAndTag() {
+            ProjectTaskDTO findTask = await _addProjectTaskOutAdapter.AddTask(_projectTaskDTO.Get());
 
-            findTask.Should()
-                    .BeEquivalentTo(newProjectTaskDTO,
-                                    options => options.Excluding(x => x.ID)
-                                                      .Excluding(x => x.ProjectID)
-                                                      .Excluding(x => x.TagIDs))
-                    .And.Match<ProjectTaskDTO>(x => x.ID != null && x.ID.ToString()! != _projectTaskDTO.ID)
-                    .And.Match<ProjectTaskDTO>(x => x.ProjectID == null)
-                    .And.Match<ProjectTaskDTO>(x => x.TagIDs!.Count == 0);
+            findTask.Should().BeEquivalentTo(_projectTaskDTO.Get(), options => options.Excluding(x => x.ID));
         }
-        
-        // TODO Test for existing Project and Tag
     }
 }

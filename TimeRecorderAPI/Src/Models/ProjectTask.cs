@@ -1,8 +1,8 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
-using TimeRecorderDomain.DTO;
+using TimeRecorderDomain;
 using TimeRecorderDomain.Shared;
 
-namespace TimeRecorderDomain.Models {
+namespace TimeRecorderAPI.Models {
     public class ProjectTask : IDBObject {
         [BsonId]
         public string ID { get; set; } = Guid.NewGuid().ToString();

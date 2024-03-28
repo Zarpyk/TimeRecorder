@@ -6,6 +6,7 @@ using TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort;
 using TimeRecorderAPI.Validators;
 using TimeRecorderAPITests.Fixtures;
 using TimeRecorderDomain.DTO;
+using TimeRecorderDomain.Shared;
 using Xunit;
 
 namespace TimeRecorderAPITests.Controller {
@@ -108,8 +109,8 @@ namespace TimeRecorderAPITests.Controller {
                 Name = "New Name",
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,
-                ProjectID = _projectTaskDTO.Get().ProjectID,
-                TagIDs = _projectTaskDTO.Get().TagIDs
+                Project = _projectTaskDTO.Get().Project,
+                Tags = _projectTaskDTO.Get().Tags
             };
 
             IActionResult result = await _projectTaskController.Put(_projectTaskDTO.ID, newProjectTaskDTO);

@@ -8,7 +8,6 @@ using Xunit;
 namespace TimeRecorderAPITests.Persistence.ProjectTask {
     public class ModifyProjectTaskOutAdapterTest : IClassFixture<ProjectTaskDTOFixture> {
         private readonly ProjectTaskDTOFixture _projectTaskDTO;
-        private ProjectTaskDTO _newProjectTaskDTO;
 
         private readonly ModifyProjectTaskOutAdapter _modifyProjectTaskOutAdapter;
 
@@ -16,40 +15,36 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
             DataBaseFixture dataBase = new(projectTaskDTO);
             _projectTaskDTO = projectTaskDTO;
 
-            ProjectTaskFactory factory = new(dataBase.Get());
+            ProjectFactory projectFactory = new();
+            TagFactory tagFactory = new();
+            ProjectTaskFactory factory = new(dataBase.Get(), projectFactory, tagFactory);
             _modifyProjectTaskOutAdapter = new ModifyProjectTaskOutAdapter(dataBase.Get(), factory);
+        }
 
-            _newProjectTaskDTO = new ProjectTaskDTO {
+        [Fact(DisplayName = "Given a existing ID and ProjectTaskDTO, " +
+                            "When replace ProjectTask, " +
+                            "Then the modified ProjectTaskDTO is returned")]
+        public async Task ReplaceExistingProjectTaskWithValidProjectAndTag() {
+            ProjectTaskDTO newProjectTaskDTO = new() {
                 ID = null,
                 Name = "New Name",
                 TimeEstimated = _projectTaskDTO.Get().TimeEstimated,
                 TimeRecords = _projectTaskDTO.Get().TimeRecords,
-                ProjectID = _projectTaskDTO.Get().ProjectID,
-                TagIDs = _projectTaskDTO.Get().TagIDs
+                Project = _projectTaskDTO.Get().Project,
+                Tags = _projectTaskDTO.Get().Tags
             };
-        }
 
-        [Fact(DisplayName = "Given a existing ID and ProjectTaskDTO with non-existing Project and Tag, " +
-                            "When replace ProjectTask, " +
-                            "Then the modified ProjectTaskDTO is returned without project and tag")]
-        public async Task ReplaceExistingProjectTask() {
-            ProjectTaskDTO? findTask = await _modifyProjectTaskOutAdapter.ReplaceTask(_projectTaskDTO.ID, _newProjectTaskDTO);
+            ProjectTaskDTO? findTask = await _modifyProjectTaskOutAdapter.ReplaceTask(_projectTaskDTO.ID, newProjectTaskDTO);
 
-            _newProjectTaskDTO.ID = new Guid(_projectTaskDTO.ID);
-            findTask.Should()
-                    .BeEquivalentTo(_newProjectTaskDTO, options => options.Excluding(x => x.ID)
-                                                                          .Excluding(x => x.ProjectID)
-                                                                          .Excluding(x => x.TagIDs))
-                    .And.Match<ProjectTaskDTO>(x => x.ID != null && x.ID.ToString()! == _projectTaskDTO.ID &&
-                                                    x.ProjectID == null &&
-                                                    x.TagIDs!.Count == 0);
+            findTask.Should().BeEquivalentTo(newProjectTaskDTO, options => options.Excluding(x => x.ID))
+                    .And.Match<ProjectTaskDTO>(x => x.ID != null && x.ID.ToString()! == _projectTaskDTO.ID);
         }
 
         [Fact(DisplayName = "Given a non-existing ID and ProjectTaskDTO, " +
                             "When replace ProjectTask, " +
                             "Then null is returned")]
         public async Task ReplaceNonExistingProjectTask() {
-            ProjectTaskDTO? findTask = await _modifyProjectTaskOutAdapter.ReplaceTask("non-existing-id", _newProjectTaskDTO);
+            ProjectTaskDTO? findTask = await _modifyProjectTaskOutAdapter.ReplaceTask("non-existing-id", _projectTaskDTO.Get());
 
             findTask.Should().BeNull();
         }

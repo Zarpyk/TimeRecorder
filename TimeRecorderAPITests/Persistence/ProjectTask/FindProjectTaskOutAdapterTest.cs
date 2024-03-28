@@ -15,7 +15,9 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
             DataBaseFixture dataBase = new(projectTaskDTO);
             _projectTaskDTO = projectTaskDTO;
 
-            ProjectTaskFactory factory = new(dataBase.Get());
+            ProjectFactory projectFactory = new();
+            TagFactory tagFactory = new();
+            ProjectTaskFactory factory = new(dataBase.Get(), projectFactory, tagFactory);
             _findProjectTaskOutAdapter = new FindProjectTaskOutAdapter(dataBase.Get(), factory);
         }
 
