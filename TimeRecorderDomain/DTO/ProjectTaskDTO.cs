@@ -2,7 +2,7 @@
 using TimeRecorderDomain.Shared;
 
 namespace TimeRecorderDomain.DTO {
-    public record ProjectTaskDTO() {
+    public record ProjectTaskDTO : IDTO {
         [SwaggerSchema(ReadOnly = true)]
         public Guid? ID { get; set; }
         public string? Name { get; set; }

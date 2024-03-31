@@ -44,7 +44,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
                 Tags = _projectTaskDTO.Get().Tags
             };
 
-            ProjectTaskDTO? projectTaskDTO = await _modifyProjectTaskService.ReplaceTask(_projectTaskDTO.ID, newProjectTaskDTO);
+            ProjectTaskDTO? projectTaskDTO = await _modifyProjectTaskService.Replace(_projectTaskDTO.ID, newProjectTaskDTO);
             newProjectTaskDTO.ID = new Guid(_projectTaskDTO.ID);
             projectTaskDTO.Should().BeEquivalentTo(newProjectTaskDTO,
                                                    options => options.Excluding(x => x.ID))
@@ -56,7 +56,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
                             "Then null is returned.")]
         public async Task ReplaceNonExistingTask() {
             ProjectTaskDTO? projectTaskDTO =
-                await _modifyProjectTaskService.ReplaceTask("non-existing-id", _projectTaskDTO.Get());
+                await _modifyProjectTaskService.Replace("non-existing-id", _projectTaskDTO.Get());
 
             projectTaskDTO.Should().BeNull();
         }

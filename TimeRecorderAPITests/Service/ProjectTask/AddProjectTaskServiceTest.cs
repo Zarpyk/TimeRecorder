@@ -31,7 +31,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
                             "When AddTask is called, " +
                             "Then ProjectTaskDTO is returned.")]
         public async Task AddNewProjectTask() {
-            ProjectTaskDTO? projectTaskDTO = await _addProjectTaskService.AddTask(_projectTaskDTO.Get());
+            ProjectTaskDTO? projectTaskDTO = await _addProjectTaskService.Add(_projectTaskDTO.Get());
             projectTaskDTO.Should().BeEquivalentTo(_projectTaskDTO.Get());
         }
     }

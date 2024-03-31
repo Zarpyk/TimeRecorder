@@ -1,7 +1,6 @@
-﻿using TimeRecorderDomain.DTO;
+﻿using TimeRecorderAPI.Application.Port.In.Service.GenericPort;
+using TimeRecorderDomain.DTO;
 
 namespace TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort {
-    public interface IModifyProjectTaskInPort {
-        public Task<ProjectTaskDTO?> ReplaceTask(string id, ProjectTaskDTO projectTaskDTO);
-    }
+    public interface IModifyProjectTaskInPort : IGenericModifyInPort<ProjectTaskDTO>;
 }

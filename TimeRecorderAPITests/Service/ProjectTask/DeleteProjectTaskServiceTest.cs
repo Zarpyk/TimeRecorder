@@ -33,7 +33,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
                             "When delete ProjectTask , " +
                             "Then true is returned.")]
         public async Task DeleteExistingProjectTask() {
-            bool result = await _deleteProjectTaskService.DeleteTask(_projectTaskDTO.ID);
+            bool result = await _deleteProjectTaskService.Delete(_projectTaskDTO.ID);
             result.Should().BeTrue();
         }
         
@@ -41,7 +41,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
                             "When delete ProjectTask , " +
                             "Then false is returned.")]
         public async Task DeleteNonExistingProjectTask() {
-            bool result = await _deleteProjectTaskService.DeleteTask("non-existing-id");
+            bool result = await _deleteProjectTaskService.Delete("non-existing-id");
             result.Should().BeFalse();
         }
     }

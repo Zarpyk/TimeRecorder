@@ -5,7 +5,7 @@ using TimeRecorderAPI.Configuration.Adapter;
 namespace TimeRecorderAPI.Application.Service.ProjectTaskService {
     [PortAdapter(typeof(IDeleteProjectTaskInPort))]
     public class DeleteProjectTaskService(IDeleteProjectTaskOutPort outPort) : IDeleteProjectTaskInPort {
-        public Task<bool> DeleteTask(string id) {
+        public Task<bool> Delete(string id) {
             return outPort.DeleteTask(id);
         }
     }

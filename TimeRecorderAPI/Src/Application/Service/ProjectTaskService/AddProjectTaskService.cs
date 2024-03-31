@@ -6,7 +6,7 @@ using TimeRecorderDomain.DTO;
 namespace TimeRecorderAPI.Application.Service.ProjectTaskService {
     [PortAdapter(typeof(IAddProjectTaskInPort))]
     public class AddProjectTaskService(IAddProjectTaskOutPort outPort) : IAddProjectTaskInPort {
-        public async Task<ProjectTaskDTO> AddTask(ProjectTaskDTO projectTaskDTO) {
+        public async Task<ProjectTaskDTO> Add(ProjectTaskDTO projectTaskDTO) {
             return await outPort.AddTask(projectTaskDTO);
         }
     }

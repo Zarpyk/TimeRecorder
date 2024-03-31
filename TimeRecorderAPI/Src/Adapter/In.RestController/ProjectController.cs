@@ -1,40 +1,39 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using TimeRecorderAPI.Application.Port.In.Service.ProjectTaskPort;
+using TimeRecorderAPI.Application.Port.In.Service.ProjectPort;
 using TimeRecorderAPI.Exceptions.Responses;
-using TimeRecorderAPI.Extensions;
 using TimeRecorderDomain.DTO;
 
 namespace TimeRecorderAPI.Adapter.In.RestController {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProjectTaskController(
-        IFindProjectTaskInPort findInPort,
-        IAddProjectTaskInPort addInPort,
-        IModifyProjectTaskInPort modifyInPort,
-        IDeleteProjectTaskInPort deleteInPort,
-        IValidator<ProjectTaskDTO> validator
-    ) : GenericController<ProjectTaskDTO>(findInPort, addInPort, modifyInPort, deleteInPort, validator) {
-        
+    public class ProjectController(
+        IFindProjectInPort findInPort,
+        IAddProjectInPort addInPort,
+        IModifyProjectInPort modifyInPort,
+        IDeleteProjectInPort deleteInPort,
+        IValidator<ProjectDTO> validator
+    ) : GenericController<ProjectDTO>(findInPort, addInPort, modifyInPort, deleteInPort, validator) {
+
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectTaskDTO))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public override async Task<IActionResult> Get(string id) {
             return await base.Get(id);
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProjectTaskDTO))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ProjectDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationExceptionResponse))]
-        public override async Task<IActionResult> Post(ProjectTaskDTO dto) {
+        public override async Task<IActionResult> Post(ProjectDTO dto) {
             return await base.Post(dto);
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectTaskDTO))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationExceptionResponse))]
-        public override async Task<IActionResult> Put(string id, ProjectTaskDTO dto) {
+        public override async Task<IActionResult> Put(string id, ProjectDTO dto) {
             return await base.Put(id, dto);
         }
 
