@@ -24,7 +24,7 @@ namespace TimeRecorderAPITests.Factory {
                             "When create ProjectTask, " +
                             "Then ProjectTask with Project and Tag is returned.")]
         public async Task CreateProjectTaskWithValidProjectAndTag() {
-            ProjectTask? projectTask = await _projectTaskFactory.CreateTask(_projectTaskDTO);
+            ProjectTask? projectTask = await _projectTaskFactory.Create(_projectTaskDTO);
 
             projectTask.Should().NotBeNull();
             projectTask!.ID.Should().NotBe(_projectTaskDTO.ID.ToString());
@@ -59,7 +59,7 @@ namespace TimeRecorderAPITests.Factory {
                 Tags = [new TagDTO { ID = Guid.Empty }]
             };
             
-            ProjectTask? projectTask = await _projectTaskFactory.CreateTask(newProjectTaskDTO);
+            ProjectTask? projectTask = await _projectTaskFactory.Create(newProjectTaskDTO);
             
             projectTask!.Project.Should().BeNull();
             projectTask.Tags.Should().BeNull();
@@ -89,7 +89,7 @@ namespace TimeRecorderAPITests.Factory {
                 Tags = tags
             };
             
-            ProjectTaskDTO? projectTaskDTO = _projectTaskFactory.CreateTaskDTO(projectTask);
+            ProjectTaskDTO? projectTaskDTO = _projectTaskFactory.CreateDTO(projectTask);
             
             projectTaskDTO.Should().NotBeNull();
             projectTaskDTO!.ID.Should().Be(new Guid(projectTask.ID));
@@ -98,12 +98,12 @@ namespace TimeRecorderAPITests.Factory {
             projectTaskDTO.TimeRecords.Should().BeEquivalentTo(projectTask.TimeRecords);
             
             projectTaskDTO.Project.Should().NotBeNull();
-            projectTaskDTO.Project!.Should().BeEquivalentTo(_projectFactory.CreateProjectDTO(_project));
+            projectTaskDTO.Project!.Should().BeEquivalentTo(_projectFactory.CreateDTO(_project));
             
             projectTaskDTO.Tags.Should().NotBeNull();
             projectTaskDTO.Tags!.Should().HaveCount(projectTask.Tags.Count);
             foreach (Tag tag in projectTask.Tags) {
-                projectTaskDTO.Tags.Should().ContainEquivalentOf(_tagFactory.CreateTagDTO(tag));
+                projectTaskDTO.Tags.Should().ContainEquivalentOf(_tagFactory.CreateDTO(tag));
             }
         }
     }

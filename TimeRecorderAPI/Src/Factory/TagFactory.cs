@@ -4,8 +4,8 @@ using TimeRecorderDomain.DTO;
 
 namespace TimeRecorderAPI.Factory {
     [Factory]
-    public class TagFactory {
-        public Tag? CreateTag(TagDTO? tagDTO) {
+    public class TagFactory : IFactory<Tag, TagDTO> {
+        public async Task<Tag?> Create(TagDTO? tagDTO) {
             if (tagDTO == null) return null;
 
             Tag tag = new() {
@@ -13,18 +13,18 @@ namespace TimeRecorderAPI.Factory {
                 Color = tagDTO.Color
             };
 
-            return tag;
+            return await Task.FromResult(tag);
         }
 
-        public TagDTO? CreateTagDTO(Tag? tag) {
+        public TagDTO? CreateDTO(Tag? tag) {
             if (tag == null) return null;
-            
+
             TagDTO tagDTO = new() {
                 ID = new Guid(tag.ID),
                 Name = tag.Name,
                 Color = tag.Color
             };
-            
+
             return tagDTO;
         }
     }

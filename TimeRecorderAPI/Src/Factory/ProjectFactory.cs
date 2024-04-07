@@ -4,8 +4,8 @@ using TimeRecorderDomain.DTO;
 
 namespace TimeRecorderAPI.Factory {
     [Factory]
-    public class ProjectFactory {
-        public Project? CreateProject(ProjectDTO? projectDTO) {
+    public class ProjectFactory : IFactory<Project, ProjectDTO> {
+        public async Task<Project?> Create(ProjectDTO? projectDTO) {
             if (projectDTO == null) return null;
 
             Project project = new() {
@@ -13,10 +13,10 @@ namespace TimeRecorderAPI.Factory {
                 Color = projectDTO.Color
             };
 
-            return project;
+            return await Task.FromResult(project);
         }
 
-        public ProjectDTO? CreateProjectDTO(Project? project) {
+        public ProjectDTO? CreateDTO(Project? project) {
             if (project == null) return null;
             ProjectDTO projectDTO = new() {
                 ID = new Guid(project.ID),

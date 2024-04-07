@@ -1,4 +1,5 @@
-﻿using TimeRecorderAPI.Application.Port.Out.Persistence.ProjectTaskPort;
+﻿using TimeRecorderAPI.Adapter.Out.Persistence.GenericAdapters;
+using TimeRecorderAPI.Application.Port.Out.Persistence.ProjectTaskPort;
 using TimeRecorderAPI.Configuration.Adapter;
 using TimeRecorderAPI.DB;
 using TimeRecorderAPI.Factory;
@@ -10,11 +11,5 @@ namespace TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters {
     public class FindProjectTaskOutAdapter(
         IDataBaseManager db,
         ProjectTaskFactory factory
-    ) : IFindProjectTaskOutPort {
-        public async Task<ProjectTaskDTO?> Find(string id) {
-            ProjectTask? projectTask = await db.Find<ProjectTask>(id);
-            
-            return factory.CreateTaskDTO(projectTask);
-        }
-    }
+    ) : GenericFindOutAdapter<ProjectTask, ProjectTaskDTO, ProjectTaskFactory>(db, factory), IFindProjectTaskOutPort;
 }

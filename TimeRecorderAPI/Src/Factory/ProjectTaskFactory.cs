@@ -5,8 +5,12 @@ using TimeRecorderDomain.DTO;
 
 namespace TimeRecorderAPI.Factory {
     [Factory]
-    public class ProjectTaskFactory(IDataBaseManager dataBaseManager, ProjectFactory projectFactory, TagFactory tagFactory) {
-        public async Task<ProjectTask?> CreateTask(ProjectTaskDTO? projectTaskDTO) {
+    public class ProjectTaskFactory(
+        IDataBaseManager dataBaseManager,
+        ProjectFactory projectFactory,
+        TagFactory tagFactory
+    ) : IFactory<ProjectTask, ProjectTaskDTO> {
+        public async Task<ProjectTask?> Create(ProjectTaskDTO? projectTaskDTO) {
             if (projectTaskDTO == null) return null;
             ProjectTask projectTask = new() {
                 Name = projectTaskDTO.Name,
@@ -26,19 +30,19 @@ namespace TimeRecorderAPI.Factory {
                 }
                 if (projectTask.Tags.Count == 0) projectTask.Tags = null;
             }
-            
+
             return projectTask;
         }
 
-        public ProjectTaskDTO? CreateTaskDTO(ProjectTask? projectTask) {
+        public ProjectTaskDTO? CreateDTO(ProjectTask? projectTask) {
             if (projectTask == null) return null;
             ProjectTaskDTO projectTaskDTO = new() {
                 ID = new Guid(projectTask.ID),
                 Name = projectTask.Name,
                 TimeEstimated = projectTask.TimeEstimated,
                 TimeRecords = projectTask.TimeRecords,
-                Project = projectFactory.CreateProjectDTO(projectTask.Project),
-                Tags = projectTask.Tags?.Select(tagFactory.CreateTagDTO).ToHashSet()
+                Project = projectFactory.CreateDTO(projectTask.Project),
+                Tags = projectTask.Tags?.Select(tagFactory.CreateDTO).ToHashSet()
             };
             return projectTaskDTO;
         }
