@@ -24,7 +24,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         }
 
         private void SetupPorts() {
-            _modifyProjectTaskOutPort.Setup(x => x.ReplaceTask(_projectTaskDTO.ID, It.IsAny<ProjectTaskDTO>()))
+            _modifyProjectTaskOutPort.Setup(x => x.Replace(_projectTaskDTO.ID, It.IsAny<ProjectTaskDTO>()))
                                      .ReturnsAsync((string id, ProjectTaskDTO projectTaskDTO) => {
                                           projectTaskDTO.ID = new Guid(id);
                                           return projectTaskDTO;

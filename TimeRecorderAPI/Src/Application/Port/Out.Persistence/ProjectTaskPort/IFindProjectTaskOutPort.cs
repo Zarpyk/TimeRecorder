@@ -1,7 +1,6 @@
-﻿using TimeRecorderDomain.DTO;
+﻿using TimeRecorderAPI.Application.Port.Out.Persistence.GenericPort;
+using TimeRecorderDomain.DTO;
 
 namespace TimeRecorderAPI.Application.Port.Out.Persistence.ProjectTaskPort {
-    public interface IFindProjectTaskOutPort {
-        public Task<ProjectTaskDTO?> FindTask(string id);
-    }
+    public interface IFindProjectTaskOutPort : IGenericFindOutPort<ProjectTaskDTO>;
 }

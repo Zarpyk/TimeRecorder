@@ -8,7 +8,7 @@ namespace TimeRecorderAPI.Application.Service.ProjectTaskService {
     public class FindProjectTaskService(IFindProjectTaskOutPort outPort) : IFindProjectTaskInPort {
 
         public async Task<ProjectTaskDTO?> Find(string id) {
-            return await outPort.FindTask(id);
+            return await outPort.Find(id);
         }
     }
 }

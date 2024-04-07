@@ -6,7 +6,7 @@ using TimeRecorderAPI.Models;
 namespace TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters {
     [PortAdapter(typeof(IDeleteProjectTaskOutPort))]
     public class DeleteProjectTaskOutAdapter(IDataBaseManager db) : IDeleteProjectTaskOutPort {
-        public async Task<bool> DeleteTask(string id) {
+        public async Task<bool> Delete(string id) {
             return await db.Delete<ProjectTask>(id);
         }
     }

@@ -7,23 +7,23 @@ using TimeRecorderDomain.DTO;
 using Xunit;
 
 namespace TimeRecorderAPITests.Service.ProjectTask {
-    public class AddProjectTaskServiceTest : IClassFixture<ProjectTaskDTOFixture> {
+    public class AddProjectServiceTest : IClassFixture<ProjectTaskDTOFixture> {
         private readonly ProjectTaskDTOFixture _projectTaskDTO;
 
         private readonly Mock<IAddProjectTaskOutPort> _addProjectTaskOutPort;
-        private readonly AddProjectTaskService _addProjectTaskService;
+        private readonly AddProjectService _addProjectService;
 
-        public AddProjectTaskServiceTest(ProjectTaskDTOFixture projectTaskDTO) {
+        public AddProjectServiceTest(ProjectTaskDTOFixture projectTaskDTO) {
             _projectTaskDTO = projectTaskDTO;
             _addProjectTaskOutPort = new Mock<IAddProjectTaskOutPort>();
 
             SetupPorts();
 
-            _addProjectTaskService = new AddProjectTaskService(_addProjectTaskOutPort.Object);
+            _addProjectService = new AddProjectService(_addProjectTaskOutPort.Object);
         }
 
         private void SetupPorts() {
-            _addProjectTaskOutPort.Setup(x => x.AddTask(_projectTaskDTO.Get()))
+            _addProjectTaskOutPort.Setup(x => x.Add(_projectTaskDTO.Get()))
                                   .ReturnsAsync(_projectTaskDTO.Get());
         }
 
@@ -31,7 +31,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
                             "When AddTask is called, " +
                             "Then ProjectTaskDTO is returned.")]
         public async Task AddNewProjectTask() {
-            ProjectTaskDTO? projectTaskDTO = await _addProjectTaskService.Add(_projectTaskDTO.Get());
+            ProjectTaskDTO? projectTaskDTO = await _addProjectService.Add(_projectTaskDTO.Get());
             projectTaskDTO.Should().BeEquivalentTo(_projectTaskDTO.Get());
         }
     }

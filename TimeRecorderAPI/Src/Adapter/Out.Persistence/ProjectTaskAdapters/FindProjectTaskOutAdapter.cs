@@ -11,7 +11,7 @@ namespace TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters {
         IDataBaseManager db,
         ProjectTaskFactory factory
     ) : IFindProjectTaskOutPort {
-        public async Task<ProjectTaskDTO?> FindTask(string id) {
+        public async Task<ProjectTaskDTO?> Find(string id) {
             ProjectTask? projectTask = await db.Find<ProjectTask>(id);
             
             return factory.CreateTaskDTO(projectTask);

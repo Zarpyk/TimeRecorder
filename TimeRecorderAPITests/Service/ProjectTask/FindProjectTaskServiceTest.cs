@@ -23,9 +23,9 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         }
 
         private void SetupPorts() {
-            _findProjectTaskOutPort.Setup(x => x.FindTask(It.IsAny<string>()))
+            _findProjectTaskOutPort.Setup(x => x.Find(It.IsAny<string>()))
                                    .ReturnsAsync((ProjectTaskDTO?) null);
-            _findProjectTaskOutPort.Setup(x => x.FindTask(_projectTaskDTO.ID))
+            _findProjectTaskOutPort.Setup(x => x.Find(_projectTaskDTO.ID))
                                    .ReturnsAsync(_projectTaskDTO.Get());
         }
 

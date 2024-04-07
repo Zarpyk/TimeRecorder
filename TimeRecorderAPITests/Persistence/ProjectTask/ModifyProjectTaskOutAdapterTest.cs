@@ -34,7 +34,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
                 Tags = _projectTaskDTO.Get().Tags
             };
 
-            ProjectTaskDTO? findTask = await _modifyProjectTaskOutAdapter.ReplaceTask(_projectTaskDTO.ID, newProjectTaskDTO);
+            ProjectTaskDTO? findTask = await _modifyProjectTaskOutAdapter.Replace(_projectTaskDTO.ID, newProjectTaskDTO);
 
             findTask.Should().BeEquivalentTo(newProjectTaskDTO, options => options.Excluding(x => x.ID))
                     .And.Match<ProjectTaskDTO>(x => x.ID != null && x.ID.ToString()! == _projectTaskDTO.ID);
@@ -44,7 +44,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
                             "When replace ProjectTask, " +
                             "Then null is returned")]
         public async Task ReplaceNonExistingProjectTask() {
-            ProjectTaskDTO? findTask = await _modifyProjectTaskOutAdapter.ReplaceTask("non-existing-id", _projectTaskDTO.Get());
+            ProjectTaskDTO? findTask = await _modifyProjectTaskOutAdapter.Replace("non-existing-id", _projectTaskDTO.Get());
 
             findTask.Should().BeNull();
         }

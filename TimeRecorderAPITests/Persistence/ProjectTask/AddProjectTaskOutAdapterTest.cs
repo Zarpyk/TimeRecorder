@@ -25,7 +25,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
                             "When add ProjectTask, " +
                             "Then ProjectTaskDTO is returned.")]
         public async Task AddProjectTaskWithValidProjectAndTag() {
-            ProjectTaskDTO findTask = await _addProjectTaskOutAdapter.AddTask(_projectTaskDTO.Get());
+            ProjectTaskDTO findTask = await _addProjectTaskOutAdapter.Add(_projectTaskDTO.Get());
 
             findTask.Should().BeEquivalentTo(_projectTaskDTO.Get(), options => options.Excluding(x => x.ID));
         }

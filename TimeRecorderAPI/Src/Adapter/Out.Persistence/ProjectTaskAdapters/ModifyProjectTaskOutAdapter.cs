@@ -11,8 +11,7 @@ namespace TimeRecorderAPI.Adapter.Out.Persistence.ProjectTaskAdapters {
         IDataBaseManager db,
         ProjectTaskFactory factory
     ) : IModifyProjectTaskOutPort {
-
-        public async Task<ProjectTaskDTO?> ReplaceTask(string id, ProjectTaskDTO projectTaskDTO) {
+        public async Task<ProjectTaskDTO?> Replace(string id, ProjectTaskDTO projectTaskDTO) {
             ProjectTask? projectTask = await factory.CreateTask(projectTaskDTO);
             projectTask!.ID = id;
             bool replace = await db.Replace(projectTask);

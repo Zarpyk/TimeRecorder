@@ -21,7 +21,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
                             "When delete ProjectTask, " +
                             "Then true is returned")]
         public async Task ReplaceExistingProjectTask() {
-            bool delete = await _deleteProjectTaskOutAdapter.DeleteTask(_projectTaskDTO.ID);
+            bool delete = await _deleteProjectTaskOutAdapter.Delete(_projectTaskDTO.ID);
 
             delete.Should().BeTrue();
         }
@@ -30,7 +30,7 @@ namespace TimeRecorderAPITests.Persistence.ProjectTask {
                             "When delete ProjectTask, " +
                             "Then false is returned")]
         public async Task ReplaceNonExistingProjectTask() {
-            bool delete = await _deleteProjectTaskOutAdapter.DeleteTask("non-existing-id");
+            bool delete = await _deleteProjectTaskOutAdapter.Delete("non-existing-id");
 
             delete.Should().BeFalse();
         }

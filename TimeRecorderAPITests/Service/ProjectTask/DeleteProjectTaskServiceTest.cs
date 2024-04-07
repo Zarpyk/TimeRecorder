@@ -23,9 +23,9 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         }
 
         private void SetupPorts() {
-            _deleteProjectTaskOutPort.Setup(x => x.DeleteTask(It.IsNotIn(_projectTaskDTO.ID)))
+            _deleteProjectTaskOutPort.Setup(x => x.Delete(It.IsNotIn(_projectTaskDTO.ID)))
                                      .ReturnsAsync(false);
-            _deleteProjectTaskOutPort.Setup(x => x.DeleteTask(_projectTaskDTO.ID))
+            _deleteProjectTaskOutPort.Setup(x => x.Delete(_projectTaskDTO.ID))
                                      .ReturnsAsync(true);
         }
 

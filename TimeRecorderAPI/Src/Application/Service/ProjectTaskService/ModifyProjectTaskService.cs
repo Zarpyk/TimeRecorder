@@ -7,7 +7,7 @@ namespace TimeRecorderAPI.Application.Service.ProjectTaskService {
     [PortAdapter(typeof(IModifyProjectTaskInPort))]
     public class ModifyProjectTaskService(IModifyProjectTaskOutPort outPort) : IModifyProjectTaskInPort {
         public Task<ProjectTaskDTO?> Replace(string id, ProjectTaskDTO projectTaskDTO) {
-            return outPort.ReplaceTask(id, projectTaskDTO);
+            return outPort.Replace(id, projectTaskDTO);
         }
     }
 }
