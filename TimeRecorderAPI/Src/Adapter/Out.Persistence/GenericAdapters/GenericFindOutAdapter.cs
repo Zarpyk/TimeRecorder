@@ -25,5 +25,10 @@ namespace TimeRecorderAPI.Adapter.Out.Persistence.GenericAdapters {
 
             return factory.CreateDTO(projectTask);
         }
+
+        public async Task<List<U>> FindAll() {
+            List<T> projectTasks = await db.FindAll<T>();
+            return projectTasks.Select(projectTask => factory.CreateDTO(projectTask)!).ToList();
+        }
     }
 }

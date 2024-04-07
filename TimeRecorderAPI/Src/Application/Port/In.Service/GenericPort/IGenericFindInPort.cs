@@ -8,5 +8,12 @@ namespace TimeRecorderAPI.Application.Port.In.Service.GenericPort {
         /// <param name="id"> The ID of the object </param>
         /// <returns> T type DTO or null if not found </returns>
         public Task<T?> Find(string id);
+
+        /// <summary>
+        /// Return all DTOs
+        /// </summary>
+        /// <typeparam name="T"> T type DTO </typeparam>
+        /// <returns></returns>
+        public Task<List<T>> FindAll();
     }
 }

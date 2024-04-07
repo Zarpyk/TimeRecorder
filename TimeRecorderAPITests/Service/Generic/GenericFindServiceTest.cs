@@ -5,7 +5,7 @@ using TimeRecorderAPI.Application.Service.GenericService;
 using TimeRecorderAPITests.Fixtures;
 using Xunit;
 
-namespace TimeRecorderAPITests.Service.ProjectTask {
+namespace TimeRecorderAPITests.Service.Generic {
     public class GenericFindServiceTest : IClassFixture<TestDTOFixture> {
         private readonly TestDTOFixture _dto;
 
@@ -31,7 +31,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         [Fact(DisplayName = "Given a existing task ID, " +
                             "When FindTask is called, " +
                             "Then the task is returned.")]
-        public async Task FindTaskWithExistingID() {
+        public async Task FindObjectWithExistingID() {
             TestDTO? dto = await _service.Find(_dto.ID);
             dto.Should().BeEquivalentTo(_dto.Get());
         }
@@ -39,7 +39,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         [Fact(DisplayName = "Given a non-existing task ID, " +
                             "When FindTask is called, " +
                             "Then null is returned.")]
-        public async Task FindTaskWithNonExistingID() {
+        public async Task FindObjectWithNonExistingID() {
             TestDTO? dto = await _service.Find("non-existing-id");
             dto.Should().BeNull();
         }

@@ -5,7 +5,7 @@ using TimeRecorderAPI.Application.Service.GenericService;
 using TimeRecorderAPITests.Fixtures;
 using Xunit;
 
-namespace TimeRecorderAPITests.Service.ProjectTask {
+namespace TimeRecorderAPITests.Service.Generic {
     public class GenericDeleteServiceTest : IClassFixture<TestDTOFixture> {
         private readonly TestDTOFixture _dto;
 
@@ -31,7 +31,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         [Fact(DisplayName = "Given a existing ID, " +
                             "When delete Object , " +
                             "Then true is returned.")]
-        public async Task DeleteExistingProjectTask() {
+        public async Task DeleteExistingObject() {
             bool result = await _service.Delete(_dto.ID);
             result.Should().BeTrue();
         }
@@ -39,7 +39,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         [Fact(DisplayName = "Given a non-existing ID, " +
                             "When delete Object , " +
                             "Then false is returned.")]
-        public async Task DeleteNonExistingProjectTask() {
+        public async Task DeleteNonExistingObject() {
             bool result = await _service.Delete("non-existing-id");
             result.Should().BeFalse();
         }

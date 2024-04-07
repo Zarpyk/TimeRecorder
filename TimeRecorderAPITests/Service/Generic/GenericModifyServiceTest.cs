@@ -5,7 +5,7 @@ using TimeRecorderAPI.Application.Service.GenericService;
 using TimeRecorderAPITests.Fixtures;
 using Xunit;
 
-namespace TimeRecorderAPITests.Service.ProjectTask {
+namespace TimeRecorderAPITests.Service.Generic {
     public class GenericModifyServiceTest : IClassFixture<TestDTOFixture> {
         private readonly TestDTOFixture _dto;
 
@@ -32,7 +32,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         [Fact(DisplayName = "Given a existing ID, " +
                             "When replace Object , " +
                             "Then the modified ObjectDTO is returned.")]
-        public async Task ReplaceExistingTask() {
+        public async Task ReplaceExistingObject() {
             TestDTO newDTO = new() {
                 ID = null,
                 SomeProperty = "New Name"
@@ -47,7 +47,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         [Fact(DisplayName = "Given a non-existing ID, " +
                             "When replace Object , " +
                             "Then null is returned.")]
-        public async Task ReplaceNonExistingTask() {
+        public async Task ReplaceNonExistingObject() {
             TestDTO? dto = await _service.Replace("non-existing-id", _dto.Get());
 
             dto.Should().BeNull();

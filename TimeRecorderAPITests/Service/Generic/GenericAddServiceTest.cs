@@ -5,7 +5,7 @@ using TimeRecorderAPI.Application.Service.GenericService;
 using TimeRecorderAPITests.Fixtures;
 using Xunit;
 
-namespace TimeRecorderAPITests.Service.ProjectTask {
+namespace TimeRecorderAPITests.Service.Generic {
     public class GenericAddServiceTest : IClassFixture<TestDTOFixture> {
         private readonly TestDTOFixture _dto;
 
@@ -29,7 +29,7 @@ namespace TimeRecorderAPITests.Service.ProjectTask {
         [Fact(DisplayName = "Given a ObjectDTO, " +
                             "When Add is called, " +
                             "Then ObjectDTO is returned.")]
-        public async Task AddNewProjectTask() {
+        public async Task AddNewObject() {
             TestDTO dto = await _service.Add(_dto.Get());
             dto.Should().BeEquivalentTo(_dto.Get());
         }

@@ -12,6 +12,11 @@ namespace TimeRecorderAPI.Adapter.In.RestController {
         IGenericDeleteInPort<T> deleteInPort,
         IValidator<T> validator
     ) : ControllerBase where T : IDTO {
+        public virtual async Task<IActionResult> GetAll() {
+            List<T> result = await findInPort.FindAll();
+            return Ok(result);
+        }
+        
         public virtual async Task<IActionResult> Get(string id) {
             T? result = await findInPort.Find(id);
             return result == null ? NotFound() : Ok(result);

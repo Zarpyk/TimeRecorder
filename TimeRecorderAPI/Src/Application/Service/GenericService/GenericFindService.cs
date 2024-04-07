@@ -7,5 +7,9 @@ namespace TimeRecorderAPI.Application.Service.GenericService {
         public async Task<T?> Find(string id) {
             return await outPort.Find(id);
         }
+
+        public async Task<List<T>> FindAll() {
+            return await outPort.FindAll();
+        }
     }
 }

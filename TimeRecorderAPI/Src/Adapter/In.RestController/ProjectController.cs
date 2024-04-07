@@ -15,6 +15,13 @@ namespace TimeRecorderAPI.Adapter.In.RestController {
         IValidator<ProjectDTO> validator
     ) : GenericController<ProjectDTO>(findInPort, addInPort, modifyInPort, deleteInPort, validator) {
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ProjectDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public override async Task<IActionResult> GetAll() {
+            return await base.GetAll();
+        }
+        
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProjectDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
