@@ -3,7 +3,7 @@ using TimeRecorderAPI.Adapter.Out.Persistence.GenericAdapters;
 using TimeRecorderAPITests.Fixtures;
 using Xunit;
 
-namespace TimeRecorderAPITests.Persistence.ProjectTask {
+namespace TimeRecorderAPITests.Persistence.Generic {
     public class GenericFindOutAdapterTest : IClassFixture<TestDTOFixture> {
         private readonly TestDTOFixture _dto;
 
